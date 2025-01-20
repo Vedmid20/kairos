@@ -1,0 +1,27 @@
+$purple: #7b4fcd;
+$light-purple: #9479e7;
+$yellow: #f7e78b;
+$light-yellow: #ebdf9b;
+$red: #e23232;
+$black: #060606;
+$grey: #4c4c4c;
+$light-grey: #a4a4a4;
+$white: #ffffff;
+$green: #6ae16a;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bubbler+One&family=Caveat:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Ruthie&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+}
+

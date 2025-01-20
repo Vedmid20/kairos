@@ -1,0 +1,44 @@
+@import '../styles/globals.scss';
+@import '../styles/mixins.scss';
+
+
+main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  button{
+    @include form-button;
+  }
+  
+  input{
+    @include form-input;
+  }
+  
+  form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+    padding: 20px;
+  }
+  h1{
+    font-size: 50px;
+    font-weight: 100;
+    font-family: 'Bubbler One', sans-serif;
+  }
+  
+  .error{
+    color: $red;
+    font-size: 12px;
+  }
+  label{
+    font-size: 17px;
+    font-weight: 300;
+    font-family: 'Montserrat', sans-serif;
+  }
+}
