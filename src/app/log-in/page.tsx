@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Link from 'next/link';
 import './log-in.scss';
 import '../styles/globals.scss';
 
@@ -22,7 +23,6 @@ const LogInPage = () => {
     <main>
         <div className="container mx-auto p-4">
             <div className="form grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4">
-            {logInError && <p className="error">{logInError}</p>}
             <form onSubmit={handleSubmit(onSubmit)}>
             <h1>Log In</h1>
                 <div className="form-group">
@@ -48,8 +48,14 @@ const LogInPage = () => {
                 />
                 {errors.password && <p className="error">{errors.password.message}</p>}
                 </div>
-
+                {logInError && <p className="error">{logInError}</p>}
                 <button type="submit">Continue</button>
+                <h5>Don't have an account? <Link href="/sign-up" className='link'>Sign Up</Link></h5>
+                <div className="oauth">
+                  <div></div>
+                  <p>or</p>
+                  <div></div>
+                </div>
             </form>
             </div>
         </div>

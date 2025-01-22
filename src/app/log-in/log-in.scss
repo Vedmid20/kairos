@@ -41,4 +41,20 @@ main{
     font-weight: 300;
     font-family: 'Montserrat', sans-serif;
   }
+  .link{
+    color: $purple;
+    &:hover{
+      color: $light-purple;
+    }
+  }
+  .oauth{
+    display: flex;
+    gap: 10px;
+    div{
+      background-color: $light-grey;
+      width: 4rem;
+      height: 1px;
+      margin-top: .8rem;
+    }
+  }
 }
