@@ -1,15 +1,21 @@
 'use client';
 
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import './log-in.scss';
 import '../styles/globals.scss';
+import Loading from '../loading';
 
 const LogInPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [logInError, setLoginError] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
@@ -28,6 +34,10 @@ const LogInPage = () => {
       setLoginError('Invalid email or password');
     }
   };
+
+  if (!isClient) {
+    return <Loading />;
+  }
 
   return (
     <>

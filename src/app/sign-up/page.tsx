@@ -10,6 +10,7 @@ import Link from 'next/link';
 import zxcvbn from 'zxcvbn';
 import './sign-up.scss';
 import '../styles/globals.scss';
+import Loading from '../loading';
 
 const schema = yup.object({
   username: yup
@@ -82,7 +83,7 @@ const SignUpPage = () => {
   };
 
   if (!isClient) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const strengthLevels = [
