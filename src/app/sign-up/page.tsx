@@ -1,32 +1,89 @@
 'use client';
 
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useRouter, NextRouter } from 'next/router';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import zxcvbn from 'zxcvbn';
 import './sign-up.scss';
 import '../styles/globals.scss';
 
+const schema = yup.object({
+  username: yup
+    .string()
+    .matches(/^[a-zA-Z0-9]+$/, 'Username can only contain letters, numbers')
+    .min(3, 'Username must be at least 3 characters long')
+    .required('Username is required'),
+  email: yup
+    .string()
+    .email('Enter a valid email address')
+    .required('Email is required'),
+  password: yup
+    .string()
+    .min(8, 'Password must be at least 8 characters long')
+    .required('Password is required'),
+});
+
 const SignUpPage = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const [signUpError, setSignUpError] = useState<string | null>(null);
+  const { register, handleSubmit, formState: { errors }, setError } = useForm({
+    resolver: yupResolver(schema)
+  });
+
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [password, setPassword] = useState('');
+  const [isClient, setIsClient] = useState(false);
+  const [signUpError, setSignUpError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
     const result = zxcvbn(newPassword);
-    setPasswordStrength(result.score)
+    setPasswordStrength(result.score);
   };
 
-  const onSubmit = (data: { email: string; password: string; username: string }) => {
-    if (data.password) {
-      alert('Sign Up successful!');
-    } else {
-      setSignUpError('Passwords do not match');
+  const checkUserAvailability = async (email: string, username: string) => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8008/api/v1/users/', {
+        params: { email, username }
+      });
+
+      if (response.data.email) {
+        setError('email', { type: 'manual', message: response.data.email });
+      }
+      if (response.data.username) {
+        setError('username', { type: 'manual', message: response.data.username });
+      }
+    } catch (error) {
+      console.error('Error checking availability:', error);
     }
   };
+
+  const onSubmit = async (data: { email: string; password: string; username: string }) => {
+    await checkUserAvailability(data.email, data.username);
+
+    if (errors.email || errors.username) {
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8008/api/v1/users/', data);
+      window.location.href = '/log-in';
+    } catch (error) {
+      setSignUpError('Something went wrong during signup.');
+      console.error('Error during signup:', error);
+    }
+  };
+
+  if (!isClient) {
+    return <div>Loading...</div>;
+  }
 
   const strengthLevels = [
     'Very Weak',
@@ -57,13 +114,13 @@ const SignUpPage = () => {
         <div className="form">
           <form onSubmit={handleSubmit(onSubmit)}>
             <h1>Sign Up</h1>
-            
+
             <div className="form-group">
               <label htmlFor="username">Username*</label>
               <br />
               <input
                 id="username"
-                type="username"
+                type="text"
                 {...register('username', { required: 'Required' })}
                 placeholder='Enter your username'
               />
@@ -75,7 +132,7 @@ const SignUpPage = () => {
               <br />
               <input
                 id="email"
-                type="email"
+                type="text"
                 {...register('email', { required: 'Required' })}
                 placeholder='Enter your email'
               />
@@ -108,7 +165,6 @@ const SignUpPage = () => {
                 {strengthLevels[passwordStrength]}
               </div>
             </div>
-
 
             <button type="submit">Continue</button>
             <h5>Already have an account? <Link href="/log-in" className='link'>Log In</Link></h5>
