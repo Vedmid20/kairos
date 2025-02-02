@@ -11,6 +11,7 @@ import zxcvbn from 'zxcvbn';
 import './sign-up.scss';
 import '../styles/globals.scss';
 import Loading from '../loading';
+import AuthButtons from "@/app/components/AuthButtons";
 
 const schema = yup.object({
   username: yup
@@ -170,6 +171,7 @@ const SignUpPage = () => {
               <p>or</p>
               <div></div>
             </div>
+            <AuthButtons />
           </form>
         </div>
       </div>

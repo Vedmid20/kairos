@@ -9,6 +9,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import './log-in.scss';
 import '../styles/globals.scss';
 import Loading from '../loading';
+import AuthButtons from "@/app/components/AuthButtons";
 
 type FormValues = {
   email: string;
@@ -76,7 +77,7 @@ const LogInPage = () => {
                 <p>or</p>
                 <div></div>
               </div>
-
+              <AuthButtons />
             </form>
           </div>
         </div>
