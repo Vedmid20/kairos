@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useRouter, NextRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -15,7 +15,7 @@ import Loading from '../loading';
 const schema = yup.object({
   username: yup
     .string()
-    .matches(/^[a-zA-Z0-9]+$/, 'Username can only contain letters, numbers')
+    .matches(/^[a-zA-Z0-9 _]+$/, 'Username can only contain letters, numbers')
     .min(3, 'Username must be at least 3 characters long')
     .required('Username is required'),
   email: yup
@@ -35,12 +35,8 @@ const SignUpPage = () => {
 
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [password, setPassword] = useState('');
-  const [isClient, setIsClient] = useState(false);
   const [signUpError, setSignUpError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const router = useRouter()
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
@@ -69,22 +65,18 @@ const SignUpPage = () => {
   const onSubmit = async (data: { email: string; password: string; username: string }) => {
     await checkUserAvailability(data.email, data.username);
 
-    if (errors.email || errors.username) {
+    if (Object.keys(errors).length > 0) {
       return;
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8008/api/v1/users/', data);
-      window.location.href = '/log-in';
+      await axios.post('http://127.0.0.1:8008/api/v1/users/', data);
+      router.push('/log-in');
     } catch (error) {
       setSignUpError('Something went wrong during signup.');
       console.error('Error during signup:', error);
     }
   };
-
-  if (!isClient) {
-    return <Loading />;
-  }
 
   const strengthLevels = [
     'Very Weak',
@@ -113,53 +105,56 @@ const SignUpPage = () => {
     <main>
       <div className="container mx-auto p-4">
         <div className="form">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(onSubmit)();
+          }}>
             <h1>Sign Up</h1>
 
             <div className="form-group">
               <label htmlFor="username">Username*</label>
-              <br />
+              <br/>
               <input
-                id="username"
-                type="text"
-                {...register('username', { required: 'Required' })}
-                placeholder='Enter your username'
+                  id="username"
+                  type="text"
+                  {...register('username', {required: 'Required'})}
+                  placeholder='Enter your username'
               />
               {errors.username && <p className="error">{errors.username.message}</p>}
             </div>
 
             <div className="form-group">
               <label htmlFor="email">Email*</label>
-              <br />
+              <br/>
               <input
-                id="email"
-                type="text"
-                {...register('email', { required: 'Required' })}
-                placeholder='Enter your email'
+                  id="email"
+                  type="text"
+                  {...register('email', {required: 'Required'})}
+                  placeholder='Enter your email'
               />
               {errors.email && <p className="error">{errors.email.message}</p>}
             </div>
 
             <div className="form-group">
               <label htmlFor="password">Password*</label>
-              <br />
+              <br/>
               <input
-                id="password"
-                type="password"
-                {...register('password', { required: 'Required' })}
-                placeholder='Enter your password'
-                value={password}
-                onChange={handlePasswordChange}
+                  id="password"
+                  type="password"
+                  {...register('password', {required: 'Required'})}
+                  placeholder='Enter your password'
+                  value={password}
+                  onChange={handlePasswordChange}
               />
               {errors.password && <p className="error">{errors.password.message}</p>}
-              
+
               <div className="password-strength">
                 <div
-                  className="strength-bar"
-                  style={{
-                    width: `${(passwordStrength / 4) * 100}%`,
-                    backgroundColor: getStrengthColor(passwordStrength),
-                  }}
+                    className="strength-bar"
+                    style={{
+                      width: `${(passwordStrength / 4) * 100}%`,
+                      backgroundColor: getStrengthColor(passwordStrength),
+                    }}
                 ></div>
               </div>
               <div className="strength-text">

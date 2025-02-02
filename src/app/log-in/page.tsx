@@ -2,22 +2,25 @@
 
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useSession, signIn, signOut } from "next-auth/react";
 import './log-in.scss';
 import '../styles/globals.scss';
 import Loading from '../loading';
 
+type FormValues = {
+  email: string;
+  password: string;
+};
+
 const LogInPage = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const [logInError, setLoginError] = useState<string | null>(null);
-  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const onSubmit = async (data: { email: string; password: string }) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data: { email: string; password: string }) => {
     try {
       const response = await axios.post('http://127.0.0.1:8008/api/token/', {
         email: data.email,
@@ -35,10 +38,6 @@ const LogInPage = () => {
     }
   };
 
-  if (!isClient) {
-    return <Loading />;
-  }
-
   return (
     <>
       <main>
@@ -48,24 +47,24 @@ const LogInPage = () => {
               <h1>Log In</h1>
               <div className="form-group">
                 <label htmlFor="email">Email*</label>
-                <br />
+                <br/>
                 <input
-                  id="email"
-                  type="email"
-                  {...register('email', { required: 'Required' })}
-                  placeholder='Enter your email'
+                    id="email"
+                    type="email"
+                    {...register('email', {required: 'Required'})}
+                    placeholder='Enter your email'
                 />
                 {errors.email && <p className="error">{errors.email.message}</p>}
               </div>
 
               <div className="form-group">
                 <label htmlFor="password">Password*</label>
-                <br />
+                <br/>
                 <input
-                  id="password"
-                  type="password"
-                  {...register('password', { required: 'Required' })}
-                  placeholder='Enter your password'
+                    id="password"
+                    type="password"
+                    {...register('password', {required: 'Required'})}
+                    placeholder='Enter your password'
                 />
                 {errors.password && <p className="error">{errors.password.message}</p>}
               </div>
@@ -77,6 +76,7 @@ const LogInPage = () => {
                 <p>or</p>
                 <div></div>
               </div>
+
             </form>
           </div>
         </div>

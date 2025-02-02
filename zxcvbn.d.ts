@@ -1,4 +1,4 @@
-declare module 'zxcvbn' {
+declare module './zxcvbn' {
     interface ZxcvbnResult {
       score: number;
       feedback: {
