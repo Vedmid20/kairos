@@ -12,6 +12,8 @@ import './sign-up.scss';
 import '../styles/globals.scss';
 import Loading from '../loading';
 import AuthButtons from "@/app/components/AuthButtons";
+import { useSession } from 'next-auth/react';
+
 
 const schema = yup.object({
   username: yup
@@ -30,7 +32,7 @@ const schema = yup.object({
 });
 
 const SignUpPage = () => {
-  const { register, handleSubmit, formState: { errors }, setError } = useForm({
+  const { register, handleSubmit, setValue, formState: { errors }, setError } = useForm({
     resolver: yupResolver(schema)
   });
 
@@ -38,6 +40,15 @@ const SignUpPage = () => {
   const [password, setPassword] = useState('');
   const [signUpError, setSignUpError] = useState<string | null>(null);
   const router = useRouter()
+  const { data: session } = useSession();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+  if (session?.user) {
+    setValue("username", session.user.name || '');
+    setValue("email", session.user.email || '');
+  }
+  }, [session, setValue]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
@@ -71,8 +82,9 @@ const SignUpPage = () => {
     }
 
     try {
-      await axios.post('http://127.0.0.1:8008/api/v1/users/', data);
-      router.push('/log-in');
+      await axios.post('/api/tempUser', data);
+      router.push('/optional-info');
+
     } catch (error) {
       setSignUpError('Something went wrong during signup.');
       console.error('Error during signup:', error);
@@ -129,7 +141,7 @@ const SignUpPage = () => {
               <br/>
               <input
                   id="email"
-                  type="text"
+                  type="email"
                   {...register('email', {required: 'Required'})}
                   placeholder='Enter your email'
               />
