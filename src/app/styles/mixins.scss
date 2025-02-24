@@ -24,6 +24,7 @@
     font-size: 16px;
     width: 17rem;
     transition: all 0.3s ease;
+    background-color: transparent;
     &::placeholder {
         color: $light-grey;
     }
@@ -33,3 +34,11 @@
     }
 }
 
+
+@mixin header {
+    background-color: $black;
+}
+
+.header{
+    @include header
+}

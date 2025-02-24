@@ -5,6 +5,7 @@ import './styles/globals.scss';
 import { SessionProvider } from "next-auth/react";
 import Sidebar from "@/app/components/Sidebar";
 import Header from "@/app/components/Header";
+import { ThemeProvider } from './context/ThemeContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,7 +18,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Header />
         <Sidebar />
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+          <ThemeProvider>
+          {children}
+        </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );

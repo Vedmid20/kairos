@@ -4,7 +4,7 @@ $yellow: #f7e78b;
 $light-yellow: #ebdf9b;
 $red: #e23232;
 $black: #060606;
-$grey: #4c4c4c;
+$grey: #393939;
 $light-grey: #a4a4a4;
 $white: #ffffff;
 $green: #6ae16a;
@@ -12,6 +12,20 @@ $green: #6ae16a;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+    --background: $white;
+    --foreground: $grey;
+    --primary: $light-purple;
+  }
+  
+  .dark {
+    --background: $grey;
+    --foreground: $white;
+    --primary: $yellow;
+  }
+
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
@@ -25,3 +39,19 @@ $green: #6ae16a;
     outline: none;
 }
 
+body {
+    background-color: var(--background);
+    color: var(--foreground);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+
+html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+.dark{
+    background-color: $grey;
+    color: $white;
+}

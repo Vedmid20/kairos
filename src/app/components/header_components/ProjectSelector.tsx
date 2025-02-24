@@ -46,7 +46,7 @@ export default function ProjectSelector({ onSelect }: { onSelect: (id: string) =
 
     return (
         <select onChange={(e) => handleProjectSelect(e.target.value)} value={selectedProject || ""}>
-            <option value="" disabled>Оберіть проект</option>
+            <option value="" disabled>Choose a project</option>
             {projects.map((project) => (
                 <option key={project.id} value={project.id}>
                     {project.name}

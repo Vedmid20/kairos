@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
+import '@/app/styles/globals.scss';
+import '@/app/styles/mixins.scss';
+
 
 export default function GetAvatar() {
     const [token, setToken] = useState<string | null>(null);
@@ -23,16 +26,11 @@ export default function GetAvatar() {
     }, []);
 
 const arrayBufferToBase64 = ({arrayBuffer}: { arrayBuffer: any }) => {
-  // Створюємо новий Uint8Array з ArrayBuffer
   const byteArray = new Uint8Array(arrayBuffer);
-
-  // Перетворюємо масив байтів в строку Base64
   let binary = '';
   for (let i = 0; i < byteArray.length; i++) {
     binary += String.fromCharCode(byteArray[i]);
   }
-
-  // Перетворюємо в base64
   const base64String = window.btoa(binary);
 
   return `data:image/jpeg;base64,${base64String}`;
@@ -48,20 +46,14 @@ useEffect(() => {
                         headers: {
                             "Authorization": `Bearer ${token}`,
                         },
-                        responseType: "arraybuffer", // Отримуємо байти
                     }
                 );
 
-                let avatarArrayBuffer = response.data; // Масив байтів
+                let userAvatar = response.data['avatar']
+                console.log(userAvatar);
+                setAvatar(userAvatar)
+                
 
-                if (avatarArrayBuffer) {
-                    // Перетворюємо ArrayBuffer в Base64
-                    const avatarBase64 = arrayBufferToBase64({arrayBuffer: avatarArrayBuffer});
-                    setAvatar(avatarBase64);
-                    console.log(avatarBase64)
-                } else {
-                    console.warn("Аватар не знайдено у відповіді сервера");
-                }
             } catch (error) {
                 console.error("Помилка отримання аватара:", error);
             }
@@ -69,16 +61,17 @@ useEffect(() => {
 
         fetchAvatar();
     }
-}, [token, userId, avatar]);
-
-
- // Видаляємо avatar із залежностей, щоб уникнути циклічного оновлення
-
-
+}, [token, userId]);
 
     return (
-        <div>
-            {avatar ? <img src={avatar} alt="Avatar" /> : <p>Завантаження аватара...</p>}
+        <div className="flex justify-center items-center">
+            <div className="w-12 rounded-full border border-red-900 bg-transparent overflow-hidden">
+                {avatar ? (
+                    <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                    <p className="text-xs text-center">Завантаження...</p>
+                )}
+            </div>
         </div>
     );
 
