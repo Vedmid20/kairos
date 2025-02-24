@@ -83,6 +83,7 @@ const SignUpPage = () => {
 
     try {
       await axios.post('/api/tempUser', data);
+      console.log(data)
       router.push('/optional-info');
 
     } catch (error) {

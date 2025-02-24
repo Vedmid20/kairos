@@ -17,10 +17,22 @@ const OptionalInfoPage = () => {
       const response = await axios.get('/api/tempUser');
       const userData = response.data;
       const user = { ...userData, ...data }
-      const d = await axios.post('http://127.0.0.1:8008/api/v1/users/', user);
-      alert(d)
-      router.push('/log-in');
+      console.log(user, userData)
+      await axios.post('http://127.0.0.1:8008/api/v1/users/', user);
+      console.log('asd')
+      const tokens = await axios.post('http://127.0.0.1:8008/api/token/', {
+        email: userData.email,
+        password: userData.password,
+      }, {
+        withCredentials: true,
+      });
+
+      localStorage.setItem('access_token', tokens.data.access);
+      localStorage.setItem('refresh_token', tokens.data.refresh);
+
+      router.push('/create-project');
     } catch (error) {
+      console.log(error)
       alert('Something went wrong')
     }
   };

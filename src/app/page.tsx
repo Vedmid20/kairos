@@ -1,12 +1,15 @@
-import { LoginRequired } from '@/app/lib/auth';
+"use client";
 
-const HomePage = () => {
+import { useState } from "react";
+import ProjectSelector from "@/app/components/project_components/ProjectSelector";
+import TicketsPage from "@/app/tickets/page";
+
+export default function Page() {
+    const [selectedProject, setSelectedProject] = useState<string | null>(null);
+
     return (
-        <main>
-            <LoginRequired />
-            <h1>Тут має бути загальна статистика</h1>
-    </main>
-    )
-}
+        <div>
 
-export  default HomePage;
+        </div>
+    );
+}

@@ -9,8 +9,10 @@ export function LoginRequired() {
     const router = useRouter();
 
     useEffect(() => {
+        const token = typeof window !== "undefined" ? localStorage.getItem('access_token') : null;
         if (status === "loading") return;
-        if (!session) {
+
+        if (!token) {
             router.push('/log-in');
         }
     }, [session, status, router]);
