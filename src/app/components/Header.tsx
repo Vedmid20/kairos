@@ -20,9 +20,10 @@ export default function Header() {
         <>
             <main className="flex justify-end header">
                 <div className="flex gap-10 mr-20 m-2">
-                    <ThemeToggle />
                     <ProjectSelector onSelect={(id) => setSelectedProject(id)} />
+                    <button className="header-button border px-3 h-10 m-auto rounded-lg border-gray-500 dark:hover:text-yellow-300 dark:hover:border-yellow-300 dark:hover:bg-transparent hover:bg-yellow-200 hover:text-black"><Link href={'/get-premium'}>Get PREMIUM</Link></button>
                     <GetAvatar />
+                    <ThemeToggle />
                 </div>
             </main>
         </>

@@ -47,8 +47,7 @@ const LogInPage = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <h1>Log In</h1>
               <div className="form-group">
-                <label htmlFor="email">Email*</label>
-                <br/>
+                <label htmlFor="email" className='flex'>Email<p className='text-red-400'>*</p></label>
                 <input
                     id="email"
                     type="email"
@@ -59,8 +58,7 @@ const LogInPage = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">Password*</label>
-                <br/>
+                <label htmlFor="password" className='flex'>Password<p className='text-red-400'>*</p></label>
                 <input
                     id="password"
                     type="password"

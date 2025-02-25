@@ -25,16 +25,6 @@ export default function GetAvatar() {
         }
     }, []);
 
-const arrayBufferToBase64 = ({arrayBuffer}: { arrayBuffer: any }) => {
-  const byteArray = new Uint8Array(arrayBuffer);
-  let binary = '';
-  for (let i = 0; i < byteArray.length; i++) {
-    binary += String.fromCharCode(byteArray[i]);
-  }
-  const base64String = window.btoa(binary);
-
-  return `data:image/jpeg;base64,${base64String}`;
-};
 
 useEffect(() => {
     if (token && userId && !avatar) {
@@ -50,7 +40,6 @@ useEffect(() => {
                 );
 
                 let userAvatar = response.data['avatar']
-                console.log(userAvatar);
                 setAvatar(userAvatar)
                 
 
@@ -65,11 +54,11 @@ useEffect(() => {
 
     return (
         <div className="flex justify-center items-center">
-            <div className="w-12 rounded-full border border-red-900 bg-transparent overflow-hidden">
+            <div className="w-12 rounded-full bg-transparent overflow-hidden">
                 {avatar ? (
                     <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
-                    <p className="text-xs text-center">Завантаження...</p>
+                    <p className="text-xs text-center">Load...</p>
                 )}
             </div>
         </div>

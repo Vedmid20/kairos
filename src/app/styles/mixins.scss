@@ -36,9 +36,49 @@
 
 
 @mixin header {
-    background-color: $black;
+    border-bottom: .1rem solid $light-purple;
+    box-shadow: 1px 1px 1rem .1rem $purple;
 }
 
 .header{
     @include header
+}
+
+@mixin sidebar {
+    border-right: .1rem solid $light-purple;
+    box-shadow: 1px 10px 1rem .1rem $purple;
+    height: 100vh;
+}
+
+.sidebar{
+    @include sidebar
+}
+
+@mixin selector {
+    transition: all .15s ease-in-out;
+    width: auto;
+    border: 1px solid $light-grey;
+    height: 2.5rem;
+    margin: auto;
+}
+
+.selector {
+    @include selector()
+}
+
+.selector:hover{
+    border: 1px solid $light-purple;
+}
+
+@mixin header-button{
+    color: $light-grey;
+    transition: all .2s ease-in;
+}
+
+.header-button {
+    @include header-button()
+}
+
+.header-button:hover {
+    color: $light-purple;
 }

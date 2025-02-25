@@ -126,8 +126,7 @@ const SignUpPage = () => {
             <h1>Sign Up</h1>
 
             <div className="form-group">
-              <label htmlFor="username">Username*</label>
-              <br/>
+              <label htmlFor="username" className='flex'>Username<p className='text-red-400'>*</p></label>
               <input
                   id="username"
                   type="text"
@@ -138,8 +137,7 @@ const SignUpPage = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">Email*</label>
-              <br/>
+              <label htmlFor="email" className='flex'>Email<p className='text-red-400'>*</p></label>
               <input
                   id="email"
                   type="email"
@@ -150,8 +148,7 @@ const SignUpPage = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password*</label>
-              <br/>
+              <label htmlFor="password" className='flex'>Password<p className='text-red-400'>*</p></label>
               <input
                   id="password"
                   type="password"

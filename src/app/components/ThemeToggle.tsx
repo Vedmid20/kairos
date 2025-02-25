@@ -24,8 +24,8 @@ export default function ThemeToggle() {
         <div className="flex justify-center items-center">
             <button
                 onClick={toggleTheme}
-                className="p-2 rounded-full transition-colors duration-300 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700">
-                {theme === 'light' ? <Moon className="w-6 h-6 text-gray-900" /> : <Sun className="w-6 h-6 text-gray-300" />}
+                className="p-2 rounded-full transition-colors duration-300 hover:bg-gray-700 dark:hover:bg-yellow-100/30">
+                {theme === 'light' ? <Moon className="w-6 h-6 text-gray-300" /> : <Sun className="w-6 h-6 text-yellow-200" />}
             </button>
         </div>
     );
