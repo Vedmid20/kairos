@@ -38,6 +38,7 @@
 @mixin header {
     border-bottom: .1rem solid $light-purple;
     box-shadow: 1px 1px 1rem .1rem $purple;
+    background-color: $black;
 }
 
 .header{
@@ -45,9 +46,12 @@
 }
 
 @mixin sidebar {
-    border-right: .1rem solid $light-purple;
-    box-shadow: 1px 10px 1rem .1rem $purple;
+    background-color: $light-purple;
+    border-right: .2rem solid $light-purple;
+    box-shadow: .5rem 0 1rem -1rem $purple;
     height: 100vh;
+    position: absolute;
+    left: 0;
 }
 
 .sidebar{
@@ -81,4 +85,43 @@
 
 .header-button:hover {
     color: $light-purple;
+}
+
+@mixin sidebar-buttons{
+    font-size: 1.5rem;
+    li{
+        margin-bottom: 1rem;
+        transition: all .2s ease-in-out;
+        &:hover{
+            transform: translate(.2rem);
+            border-right: 1rem solid $purple;
+        }
+    }
+}
+
+.sidebar-buttons{
+    @include sidebar-buttons;
+}
+
+@mixin file-button{
+    background-color: transparent;
+    border: 1px solid $light-grey;
+    color: $light-grey;
+    width: 10rem;
+    transition: all .2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    margin: auto;
+    &:hover{
+        background-color: transparent;
+        border: 1px solid $light-purple;
+        transform: scale(1.05);
+        color: $light-purple;
+    }
+}
+
+.file-button{
+    @include file-button
 }

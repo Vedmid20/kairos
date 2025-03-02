@@ -41,7 +41,6 @@ const LogInPage = () => {
 
   return (
     <>
-      <main>
         <div className="container mx-auto p-4">
           <div className="form grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4">
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -79,7 +78,6 @@ const LogInPage = () => {
             </form>
           </div>
         </div>
-      </main>
     </>
   );
 };

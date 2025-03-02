@@ -10,12 +10,14 @@ import { jwtDecode } from 'jwt-decode';
 import { LoginRequired } from '@/app/lib/auth';
 import '../styles/globals.scss'
 import './create-project.scss'
+import {router} from "next/client";
 
 const schema = yup.object({
   name: yup
     .string()
     .matches(/^[a-zA-Z0-9 _]+$/, 'Project name can only contain letters, numbers')
     .min(5, 'Project name must be at least 5 characters long')
+    .max(25, 'Project name cant be longer then 25 characters')
     .required('Project name is required'),
 });
 
@@ -28,6 +30,7 @@ const CreateProjectPage = () => {
   const [createProjectError, setCreateProjectError] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("access_token");
@@ -100,6 +103,7 @@ const CreateProjectPage = () => {
             }
           }
       );
+      router.push('/')
     } catch (error) {
       setCreateProjectError('Something went wrong during project creation.');
       console.error('Error during project creation@@@:', error);
@@ -113,21 +117,20 @@ const CreateProjectPage = () => {
         <div className="form">
           <form onSubmit={handleSubmit(onSubmit)}>
             <h1>Create Project</h1>
-
-            {preview && <img src={preview} alt="Preview" className="w-24 h-24 rounded-full mt-2" />}
-
             <div className="form-group">
-              <label htmlFor="avatar">Upload Project Icon*</label>
-              <br />
-              <input id="avatar" type="file" accept="image/*" onChange={handleFileChange} />
+              <label htmlFor="icon" className='flex'>Upload Project Icon<p className='text-red-400'>*</p></label>
+              <div className="flex gap-5">
+                <input id="icon" type="file" accept="image/*" onChange={handleFileChange} className='hidden'/>
+                <label htmlFor="icon" className='file-button rounded-lg w-10 h-10'>Upload icon</label>
+                {preview && <img src={preview} alt="Preview" className="w-10 h-10 rounded-full m-auto" />}
+              </div>
             </div>
 
             <div className="form-group">
-              <label htmlFor="name">Project Name*</label>
-              <br />
+              <label htmlFor="name" className='flex'>Project Name<p className='text-red-400'>*</p></label>
               <input
-                id="name"
-                type="text"
+                  id="name"
+                  type="text"
                 {...register('name', { required: 'Project name is required' })}
                 placeholder='Enter project name'
               />

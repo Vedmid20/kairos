@@ -54,7 +54,7 @@ useEffect(() => {
 
     return (
         <div className="flex justify-center items-center">
-            <div className="w-12 rounded-full bg-transparent overflow-hidden">
+            <div className="w-10 rounded-full bg-transparent overflow-hidden">
                 {avatar ? (
                     <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
