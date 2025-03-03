@@ -46,7 +46,6 @@
 }
 
 @mixin sidebar {
-    background-color: $light-purple;
     border-right: .2rem solid $light-purple;
     box-shadow: .5rem 0 1rem -1rem $purple;
     height: 100vh;

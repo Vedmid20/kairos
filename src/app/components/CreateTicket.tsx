@@ -78,7 +78,7 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
           isOpen={isOpen}
           onRequestClose={onClose}
           contentLabel="Example Modal"
-          className="relative z-50 max-w-lg w-full p-6 bg-white rounded-lg shadow-lg"
+          className="relative z-50 max-w-lg w-full p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
           closeTimeoutMS={200}>
         <div className="flex">
