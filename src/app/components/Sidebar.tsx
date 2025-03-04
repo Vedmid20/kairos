@@ -15,9 +15,10 @@ export default function Sidebar() {
 
     return (
         <>
-        <div className="flex-col p-3 max-w-80 min-w-72 sidebar bg-purple-800">
-            <ul className="flex-col justify-normal sidebar-buttons font-medium ml-2">
-                <li className='flex m-auto gap-2'><LineChart className='my-auto'/><Link href={''}>Statistics</Link></li>
+        <div className="flex-col p-3 max-w-80 min-w-72 sidebar bg-black/15">
+        <div className="flex justify-end mr-5 mt-5"><h2>Main</h2></div>
+            <ul className="flex-col justify-normal sidebar-buttons ml-5 mt-2 border-t border-black dark:border-white">
+                <li className='flex m-auto gap-2 mt-2'><LineChart className='my-auto'/><Link href={''}>Statistics</Link></li>
                 <li className='flex m-auto gap-2'><LayoutDashboardIcon className='my-auto'/><Link href={''}>Board</Link></li>
                 <li className='flex m-auto gap-2'><List className='my-auto'/><Link href={'/tickets'}>Tickets</Link></li>
             </ul>

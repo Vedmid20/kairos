@@ -33,3 +33,7 @@ label{
   font-weight: 300;
   font-family: 'Montserrat', sans-serif;
 }
+
+.form-button{
+  @include form-button
+}
