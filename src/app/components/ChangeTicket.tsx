@@ -29,7 +29,7 @@ const schema = yup.object({
   type: yup.string().required('Type is required'),
 });
 
-export default function CreateTicketModal({ isOpen, onClose, children }) {
+export default function ChangeTicketModal({ isOpen, onClose, children }) {
   const { register, handleSubmit, setError, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
@@ -64,6 +64,7 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
       )
       .catch(error => console.error("Error fetching task types:", error));
       console.log(taskTypes);
+
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -102,7 +103,7 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
   useEffect(() => {
     console.log("Updated taskTypes:", taskTypes);
   }, [taskTypes]);
-  
+
 
   return (
     <Modal
@@ -112,7 +113,7 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
       className="relative z-50 max-w-lg w-full p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
       closeTimeoutMS={200}>
-      
+
       <div className="flex">
         <h2 className="text-xl">Create a new ticket</h2>
         <button
@@ -134,7 +135,7 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
         }}
         transition={{ duration: 0.3 }}
         className="relative z-50">
-        
+
         <form onSubmit={handleSubmit(onSubmit)}>
 
           <div className="form-group">
@@ -170,7 +171,7 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
             Create
           </button>
         </form>
-        
+
         {children}
       </motion.div>
     </Modal>

@@ -7,6 +7,8 @@ import Sidebar from "@/app/components/Sidebar";
 import Header from "@/app/components/Header";
 import { ThemeProvider } from './context/ThemeContext';
 import { usePathname } from "next/navigation";
+import {Toaster} from "@/components/ui/sonner";
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -28,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ThemeProvider>
               <main className={`${isAuthPage ? "w-full max-w-md" : "ml-80 flex-1 p-5"}`}>
                 {children}
+                <Toaster />
               </main>
             </ThemeProvider>
           </SessionProvider>

@@ -38,6 +38,7 @@ export default function ProjectSelector({ onSelect }: { onSelect: (id: string) =
     }, [onSelect]);
 
     const handleProjectSelect = (projectId: string) => {
+        window.location.reload()
         setSelectedProject(projectId);
         onSelect(projectId);
 

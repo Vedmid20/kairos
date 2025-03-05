@@ -37,7 +37,7 @@
 
 @mixin header {
     border-bottom: .1rem solid $light-purple;
-    box-shadow: 1px 1px 1rem .1rem $purple;
+    box-shadow: 1px 1px 1rem -.3rem $purple;
     background-color: $black;
 }
 
