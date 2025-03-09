@@ -12,7 +12,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Cookies from 'js-cookie';
 
-Modal.setAppElement('#__next');
+if (typeof window !== 'undefined') {
+  Modal.setAppElement('#__next');
+}
 
 const schema = yup.object({
   title: yup.string()
@@ -29,15 +31,15 @@ const schema = yup.object({
   type: yup.string().required('Type is required'),
 });
 
-export default function ChangeTicketModal({ isOpen, onClose, children }) {
-  const { register, handleSubmit, setError, reset, formState: { errors } } = useForm({
+export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [taskTypes, setTaskTypes] = useState<{ id: number, task_type_name: string }[]>([]);
-  const projectID = Cookies.get('selectedProject')
+  const projectID = Cookies.get('selectedProject');
   const router = useRouter();
 
   useEffect(() => {
@@ -54,24 +56,32 @@ export default function ChangeTicketModal({ isOpen, onClose, children }) {
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      if (ticket?.type && taskTypes.length > 0) {
+        setValue("type", ticket.type);
+      }
+    }, [ticket?.type, taskTypes, setValue]);
 
-      axios.get('http://localhost:8008/api/v1/task-types/', {
+  useEffect(() => {
+    if (isOpen && token) {
+      document.body.style.overflow = 'hidden';
+      axios.get('http://127.0.0.1:8008/api/v1/task-types/', {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(response => setTaskTypes(response.data)
-      )
+      .then(response => setTaskTypes(response.data))
       .catch(error => console.error("Error fetching task types:", error));
-      console.log(taskTypes);
-
+      if (ticket) {
+        setValue("title", ticket.title);
+        setValue("description", ticket.description);
+        setValue("deadline", ticket.deadline);
+        setValue("type", ticket.type);
+      }
     } else {
       document.body.style.overflow = 'auto';
     }
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [isOpen, token]);
+  }, [isOpen, token, JSON.stringify(ticket), setValue]);
 
   const onSubmit = async (data: any) => {
     if (!userId) {
@@ -80,7 +90,8 @@ export default function ChangeTicketModal({ isOpen, onClose, children }) {
     }
 
     try {
-      await axios.post('http://localhost:8008/api/v1/tasks/', {
+      console.log(ticket.id)
+      await axios.patch(`http://127.0.0.1:8008/api/v1/tasks/${ticket.id}/`, {
         project: projectID,
         title: data.title,
         description: data.description,
@@ -91,31 +102,26 @@ export default function ChangeTicketModal({ isOpen, onClose, children }) {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      console.log("Ticket created successfully");
+      console.log("Ticket updated successfully");
       reset();
       onClose();
       window.location.reload();
     } catch (error) {
-      console.error("Error creating ticket:", error.response?.data || error.message);
+      console.error("Error updating ticket:", error.response?.data || error.message);
     }
   };
-
-  useEffect(() => {
-    console.log("Updated taskTypes:", taskTypes);
-  }, [taskTypes]);
-
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      contentLabel="Create Ticket Modal"
+      contentLabel="Edit Ticket Modal"
       className="relative z-50 max-w-lg w-full p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
       closeTimeoutMS={200}>
 
       <div className="flex">
-        <h2 className="text-xl">Create a new ticket</h2>
+        <h2 className="text-xl">Edit Ticket</h2>
         <button
           onClick={onClose}
           className="absolute right-10 text-lg font-semibold text-gray-500 hover:text-gray-700">
@@ -137,7 +143,6 @@ export default function ChangeTicketModal({ isOpen, onClose, children }) {
         className="relative z-50">
 
         <form onSubmit={handleSubmit(onSubmit)}>
-
           <div className="form-group">
             <label htmlFor="title" className='flex'>Title<p className='text-red-400'>*</p></label>
             <input id='title' type="text" {...register('title')} placeholder='Enter title' />
@@ -146,7 +151,7 @@ export default function ChangeTicketModal({ isOpen, onClose, children }) {
 
           <div className="form-group mr-36">
             <label htmlFor="type" className='flex'>Type<p className='text-red-400'>*</p></label>
-            <select id='type' {...register('type')} className="selector bg-transparent rounded-lg dark:bg-grey">
+            <select id='type' {...register('type')} className="selector bg-transparent rounded-lg dark:bg-grey" defaultValue={ticket?.type || ""} >
               <option value="" disabled>Select a type</option>
               {taskTypes.map(type => (
                 <option key={type.id} value={type.id}>{type.task_type_name}</option>
@@ -168,11 +173,9 @@ export default function ChangeTicketModal({ isOpen, onClose, children }) {
           </div>
 
           <button type="submit" className='form-button'>
-            Create
+            Update
           </button>
         </form>
-
-        {children}
       </motion.div>
     </Modal>
   );

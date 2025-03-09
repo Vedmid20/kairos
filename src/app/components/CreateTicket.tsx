@@ -12,7 +12,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Cookies from 'js-cookie';
 
-Modal.setAppElement('#__next');
+if (typeof window !== 'undefined') {
+  Modal.setAppElement('#__next');
+}
 
 const schema = yup.object({
   title: yup.string()
@@ -56,14 +58,12 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-
       axios.get('http://localhost:8008/api/v1/task-types/', {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => setTaskTypes(response.data)
       )
       .catch(error => console.error("Error fetching task types:", error));
-      console.log(taskTypes);
     } else {
       document.body.style.overflow = 'auto';
     }
