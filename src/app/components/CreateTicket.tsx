@@ -46,6 +46,8 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
     const storedToken = localStorage.getItem("access_token");
     if (storedToken) {
       setToken(storedToken);
+      console.log(projectID);
+      
       try {
         const decoded: any = jwtDecode(storedToken);
         setUserId(decoded.user_id);

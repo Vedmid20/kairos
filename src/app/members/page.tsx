@@ -6,9 +6,12 @@ import { Search } from "lucide-react";
 import '@/app/styles/globals.scss';
 import '@/app/styles/mixins.scss';
 import InviteMembersModal from "@/app/components/InviteMembers";
+import ShowMembers from "../components/ShowMembers";
+import Cookies from "js-cookie";
 
 export default function MembersPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const projectId = Cookies.get('selectedProject')
 
     return (
         <div className='p-5'>
@@ -28,12 +31,13 @@ export default function MembersPage() {
                 </div>
                 <div className="ml-10">
                     <div>
-                        <button onClick={() => setIsModalOpen(true)}>Invite Users</button>
+                        <button onClick={() => setIsModalOpen(true)} className="header-button px-2 rounded-lg hover:bg-white/10 py-2">Invite Users</button>
                     </div>
                 </div>
             </div>
 
             <InviteMembersModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            <ShowMembers projectId={projectId} />
         </div>
     );
 }
