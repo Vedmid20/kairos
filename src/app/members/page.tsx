@@ -2,16 +2,19 @@
 
 import { LoginRequired } from "@/app/lib/auth";
 import React, { useState } from "react";
-import { Search } from "lucide-react";
+import { Search, Filter } from "lucide-react";
 import '@/app/styles/globals.scss';
 import '@/app/styles/mixins.scss';
 import InviteMembersModal from "@/app/components/InviteMembers";
 import ShowMembers from "../components/ShowMembers";
 import Cookies from "js-cookie";
+import Loading from "../loading";
 
 export default function MembersPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const projectId = Cookies.get('selectedProject')
+    const [loading, setLoading] = useState(true);
+
 
     return (
         <div className='p-5'>
@@ -30,8 +33,11 @@ export default function MembersPage() {
                     </div>
                 </div>
                 <div className="ml-10">
-                    <div>
+                    <div className="flex gap-5">
                         <button onClick={() => setIsModalOpen(true)} className="header-button px-2 rounded-lg hover:bg-white/10 py-2">Invite Users</button>
+                        <div className="m-auto rounded-lg hover:bg-white/10 px-1 cursor-pointer">
+                            <p className="flex gap-2 header-button px-2 py-2">Filter <Filter className="w-5 h-5 text-gray-400 m-auto"/></p>
+                        </div>
                     </div>
                 </div>
             </div>
