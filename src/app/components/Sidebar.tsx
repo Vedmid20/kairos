@@ -32,13 +32,15 @@ return (
         </div>
         <ul className="flex-col justify-normal sidebar-buttons ml-2 mr-5 mt-2 border-t border-violet-400">
             {menuItems.map(({ href, label, icon }, index) => (
-                <li
-                    key={`${href}-${index}`}
-                    className={`flex gap-2 ml-5 mt-2 px-4 py-2 rounded-md transition ${
-                        pathname === href ? "bg-black/20 text-white" : "hover:bg-black/10"
-                    }`}>
+                <li className="rounded-md">
+                <Link href={href} key={`${href}-${index}`}
+                className={`flex gap-2 ml-5 mt-2 px-4 py-2 rounded-md transition ${
+                    pathname === href ? "bg-black/20 text-white" : "hover:bg-black/10"
+                }`}>
+
                     {icon}
-                    <Link href={href}>{label}</Link>
+                    {label}
+                </Link>
                 </li>
             ))}
         </ul>

@@ -7,12 +7,14 @@ import { jwtDecode } from "jwt-decode";
 import ComboBoxAnimation from '@/app/components/animations/ComboBoxAnimation'
 import '@/app/styles/globals.scss';
 import '@/app/styles/mixins.scss';
+import { useRouter } from "next/navigation";
 
 export default function GetAvatar() {
     const [token, setToken] = useState<string | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
     const [avatar, setAvatar] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         const storedToken = localStorage.getItem("access_token");
@@ -51,11 +53,16 @@ export default function GetAvatar() {
     }, [token, userId]);
 
     const menuItems = [
-        { label: "Profile", action: () => console.log("Profile clicked") },
-        { label: "Activity", action: () => console.log("Activity clicked") },
-        { label: "Settings", action: () => console.log("Settings clicked") },
-        { label: "Log Out", action: () => console.log("Log Out clicked") },
+        { label: "Profile", action: () => router.push('/profile') },
+        { label: "Activity", action: () => router.push('/activity') },
+        { label: "Settings", action: () => router.push('/settings') },
+        { label: "Log Out", action: () => handleLogOut() },
     ];
+
+    const handleLogOut = () => {
+        localStorage.removeItem("access_token");
+        router.push('/log-in')
+    }
 
     return (
         <div className="relative flex justify-center items-center">
