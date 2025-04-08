@@ -158,7 +158,7 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
 
           <div className="form-group">
             <label htmlFor="description" className='flex'>Description<p className='text-red-400'>*</p></label>
-            <textarea id='description' {...register('description')} placeholder='Enter description' className="resize-none" />
+            <textarea id='description' {...register('description')} placeholder='Enter description' className="resize-none h-52 text-[.8rem] w-96" />
             {errors.description && <p className="error">{errors.description.message}</p>}
           </div>
 

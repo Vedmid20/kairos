@@ -116,7 +116,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <main>
+    <>
       <div className="container mx-auto p-4">
         <div className="form">
           <form onSubmit={(e) => {
@@ -131,8 +131,7 @@ const SignUpPage = () => {
                   id="username"
                   type="text"
                   {...register('username', {required: 'Required'})}
-                  placeholder='Enter your username'
-              />
+                  placeholder='Enter your username'/>
               {errors.username && <p className="error">{errors.username.message}</p>}
             </div>
 
@@ -142,8 +141,7 @@ const SignUpPage = () => {
                   id="email"
                   type="email"
                   {...register('email', {required: 'Required'})}
-                  placeholder='Enter your email'
-              />
+                  placeholder='Enter your email'/>
               {errors.email && <p className="error">{errors.email.message}</p>}
             </div>
 
@@ -185,7 +183,7 @@ const SignUpPage = () => {
           </form>
         </div>
       </div>
-    </main>
+    </>
   );
 };
 

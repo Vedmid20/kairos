@@ -9,6 +9,7 @@ import CreateTicketModal from "@/app/components/CreateTicket";
 import {useState} from "react";
 import '../styles/globals.scss'
 import '../styles/mixins.scss'
+import NotificationsDropdown from "@/app/components/header_components/NotificationsDropdown";
 
 export default function Header() {
     const pathname = usePathname();
@@ -24,7 +25,7 @@ export default function Header() {
     return (
         <>
             <main className="flex justify-end header">
-                <div className="flex gap-10 mr-10 m-2">
+                <div className="flex gap-5 mr-10 m-2">
                         <CreateTicketModal isOpen={isModalOpen} onClose={closeModal}>
                             <div className=""></div>
                         </CreateTicketModal>
@@ -34,6 +35,7 @@ export default function Header() {
                         className="header-button border px-3 h-10 m-auto rounded-lg border-gray-500 dark:hover:text-yellow-300 dark:hover:border-yellow-300 dark:hover:bg-transparent hover:bg-yellow-200 hover:text-black">
                         <Link href={'/get-premium'}>Get PREMIUM</Link></button>
                     <ThemeToggle/>
+                    <NotificationsDropdown />
                     <GetAvatar/>
                 </div>
             </main>

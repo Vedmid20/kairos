@@ -92,7 +92,6 @@
         transition: all .2s ease-in-out;
         &:hover{
             transform: translate(.2rem);
-            border-right: 1rem solid $purple;
         }
     }
 }

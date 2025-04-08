@@ -15,7 +15,7 @@ export default function ComboBoxAnimation({ children }: { children: React.ReactN
                 visible: {
                     opacity: 1,
                     scaleY: 1,
-                    transition: {type: 'spring', stiffness: 320, damping: 35}
+                    transition: {type: 'spring', stiffness: 520, damping: 35}
                 },
                 exit: {opacity: 0, scaleY: 0.8, transition: {duration: 0.2}},
             }}

@@ -38,7 +38,7 @@ const OptionalInfoPage = () => {
   };
 
   return (
-    <main>
+    <>
       <div className="container mx-auto p-4">
         <div className="form">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,7 +74,7 @@ const OptionalInfoPage = () => {
           </form>
         </div>
       </div>
-    </main>
+    </>
   );
 };
 

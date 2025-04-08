@@ -33,7 +33,7 @@ const LogInPage = () => {
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
 
-      window.location.href = '/ava';
+      router.push('/tickets')
     } catch (error: any) {
       setLoginError('Invalid email or password');
     }

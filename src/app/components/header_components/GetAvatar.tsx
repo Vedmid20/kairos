@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Combobox } from '@headlessui/react';
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -15,6 +15,7 @@ export default function GetAvatar() {
     const [avatar, setAvatar] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
+    const menuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const storedToken = localStorage.getItem("access_token");
@@ -52,6 +53,19 @@ export default function GetAvatar() {
         }
     }, [token, userId]);
 
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     const menuItems = [
         { label: "Profile", action: () => router.push('/profile') },
         { label: "Activity", action: () => router.push('/activity') },
@@ -78,7 +92,7 @@ export default function GetAvatar() {
 
             {isOpen && (
                 <ComboBoxAnimation>
-                    <div className="absolute top-7 right-0 bg-white/50 backdrop-blur-md rounded-b-lg shadow-md w-52 z-10 dark:bg-grey/50 py-2">
+                    <div ref={menuRef} className="absolute top-7 right-0 bg-white/50 backdrop-blur-md rounded-b-lg shadow-md w-52 z-10 dark:bg-grey/50 py-2">
                         {menuItems.map((item) => (
                             <button
                                 key={item.label}
@@ -92,7 +106,6 @@ export default function GetAvatar() {
                         ))}
                     </div>
                 </ComboBoxAnimation>
-
             )}
         </div>
     );

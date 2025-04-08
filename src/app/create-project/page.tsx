@@ -103,6 +103,7 @@ const CreateProjectPage = () => {
             }
           }
       );
+      
       router.push('/')
     } catch (error) {
       setCreateProjectError('Something went wrong during project creation.');
@@ -111,7 +112,7 @@ const CreateProjectPage = () => {
   };
 
   return (
-    <main>
+    <>
       <LoginRequired />
       <div className="container mx-auto p-4">
         <div className="form">
@@ -141,7 +142,7 @@ const CreateProjectPage = () => {
           </form>
         </div>
       </div>
-    </main>
+    </>
   );
 };
 

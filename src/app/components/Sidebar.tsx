@@ -15,7 +15,7 @@ export default function Sidebar() {
     if (hiddenRoutes.includes(pathname)) return null;
 
     const menuItems = [
-        { href: "", label: "Statistics", icon: <LineChart /> },
+        { href: "/", label: "Statistics", icon: <LineChart /> },
         { href: "/board", label: "Board", icon: <Columns3 /> },
         { href: "/tickets", label: "Tickets", icon: <List /> },
         { href: "/members", label: "Members", icon: <Users/> }

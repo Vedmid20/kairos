@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import ComboBoxAnimation from '@/app/components/animations/ComboBoxAnimation'
+import ComboBoxAnimation from '@/app/components/animations/ComboBoxAnimation';
 import CurrentProject from "@/app/components/CurrentProject";
 import Link from 'next/link';
 import { GoArrowDown } from "react-icons/go";
@@ -25,7 +25,7 @@ export default function ProjectSelector({ onSelect }: { onSelect: (id: string) =
     const [selectedProject, setSelectedProject] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [userId, setUserId] = useState<string | null>(null);
-    const [userProjects, setUserProjects] = useState<Project[]>([]);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const token = localStorage.getItem("access_token");
@@ -82,6 +82,17 @@ export default function ProjectSelector({ onSelect }: { onSelect: (id: string) =
         }
     }, [onSelect]);
 
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     const handleProjectSelect = (projectId: string) => {
         window.location.reload();
         setSelectedProject(projectId);
@@ -90,7 +101,7 @@ export default function ProjectSelector({ onSelect }: { onSelect: (id: string) =
     };
 
     return (
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
             <div
                 className="header-button bg-transparent rounded-lg text-white px-4 py-2 cursor-pointer flex hover:bg-white/10"
                 onClick={() => setIsOpen(!isOpen)}>
@@ -100,8 +111,7 @@ export default function ProjectSelector({ onSelect }: { onSelect: (id: string) =
             </div>
             {isOpen && (
                 <ComboBoxAnimation>
-                    <div
-                        className="absolute top-2 right-0 bg-white/50 backdrop-blur-md rounded-b-lg shadow-lg w-72 z-10 dark:bg-grey/50 py-2">
+                    <div className="absolute top-2 right-0 bg-white/50 backdrop-blur-md rounded-b-lg shadow-lg w-72 z-10 dark:bg-grey/50 py-2">
                         <div className="my-1 border-b border-black/20 dark:border-white/50 py-2">
                             <div className="ml-3 mt-2">
                                 <h2 className='mb-2 text-[.9rem]'>Current project</h2>
