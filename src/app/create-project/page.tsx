@@ -19,6 +19,12 @@ const schema = yup.object({
     .min(5, 'Project name must be at least 5 characters long')
     .max(25, 'Project name cant be longer then 25 characters')
     .required('Project name is required'),
+  project_prefix: yup
+    .string()
+    .matches(/^[a-zA-Z0-9]+$/, 'Project prefix can only letters or numbers')
+    .min(2, 'Prefix must be at least 2 characters long')
+    .max(5, 'Prefix cant be longer than 5 charcters')
+    .required('Prefix is required')
 });
 
 const CreateProjectPage = () => {
@@ -68,7 +74,7 @@ const CreateProjectPage = () => {
     }
   };
 
-  const onSubmit = async (data: { name: string }) => {
+  const onSubmit = async (data: { name: string, project_prefix: string }) => {
     if (!userId) {
       setCreateProjectError("User ID is missing.");
       return;
@@ -88,13 +94,13 @@ const CreateProjectPage = () => {
       });
     }
     try {
-      console.log(base64Image)
       await axios.post(
         'http://127.0.0.1:8008/api/v1/projects/',
         {
           name: data.name,
           lead: userId,
           icon: base64Image,
+          project_prefix: data.project_prefix
         },
           {
             headers: {
@@ -136,6 +142,17 @@ const CreateProjectPage = () => {
                 placeholder='Enter project name'
               />
               {errors.name && <p className="error">{errors.name.message}</p>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="prefix" className='flex'>Project Prefix<p className='text-red-400'>*</p></label>
+              <input
+                  id="prefix"
+                  type="text"
+                {...register('project_prefix', { required: 'Project prefix is required' })}
+                placeholder='Enter project prefix'
+              />
+              {errors.project_prefix && <p className="error">{errors.project_prefix.message}</p>}
             </div>
 
             <button type="submit">Start</button>

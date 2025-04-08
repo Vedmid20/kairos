@@ -63,7 +63,7 @@ export default function ProjectSelector({ onSelect }: { onSelect: (id: string) =
 
                 setProjects(filteredProjects);
             } catch (error) {
-                console.error("Помилка отримання проектів або учасників:", error);
+                console.error("Error retrieving projects:", error);
             }
         };
 

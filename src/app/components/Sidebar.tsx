@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LineChart, Users, List, Columns3 } from 'lucide-react';
+import { Users, List, Columns3, CogIcon, CalendarClock, LucideChartNoAxesCombined, ChartGantt, Speech } from 'lucide-react';
 import dynamic from "next/dynamic";
 import Lottie from 'lottie-react';
 import board from '../../lotties/board.json'
@@ -15,10 +15,14 @@ export default function Sidebar() {
     if (hiddenRoutes.includes(pathname)) return null;
 
     const menuItems = [
-        { href: "/", label: "Statistics", icon: <LineChart /> },
+        { href: "/", label: "Statistics", icon: <LucideChartNoAxesCombined /> },
+        { href: "/", label: "Timeline", icon: <ChartGantt /> },
+        { href: "/", label: "Calendar", icon: <CalendarClock /> },
         { href: "/board", label: "Board", icon: <Columns3 /> },
         { href: "/tickets", label: "Tickets", icon: <List /> },
-        { href: "/members", label: "Members", icon: <Users/> }
+        { href: "/members", label: "Members", icon: <Users /> },
+        { href: "/", label: "Meetings", icon: <Speech /> },
+        { href: "/", label: "Project settings", icon: <CogIcon /> },
     ];
 
 

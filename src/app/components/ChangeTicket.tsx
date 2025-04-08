@@ -11,6 +11,8 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Cookies from 'js-cookie';
+import { X } from 'lucide-react';
+import CreateTicketTypeModal from './CreateTicketType';
 
 if (typeof window !== 'undefined') {
   Modal.setAppElement('#__next');
@@ -40,6 +42,7 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
   const [userId, setUserId] = useState<string | null>(null);
   const [taskTypes, setTaskTypes] = useState<{ id: number, task_type_name: string }[]>([]);
   const projectID = Cookies.get('selectedProject');
+  const [isTypeModalOpen, setIsTypeModalOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -64,7 +67,7 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
   useEffect(() => {
     if (isOpen && token) {
       document.body.style.overflow = 'hidden';
-      axios.get('http://127.0.0.1:8008/api/v1/task-types/', {
+      axios.get(`http://localhost:8008/api/v1/task-types/?projectId=${projectID}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => setTaskTypes(response.data))
@@ -124,8 +127,8 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
         <h2 className="text-xl">Edit Ticket</h2>
         <button
           onClick={onClose}
-          className="absolute right-10 text-lg font-semibold text-gray-500 hover:text-gray-700">
-          x
+          className="absolute right-10 text-lg font-semibold">
+          <X />
         </button>
       </div>
       <hr className='mt-5' />
@@ -149,14 +152,19 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
             {errors.title && <p className="error">{errors.title.message}</p>}
           </div>
 
-          <div className="form-group mr-36">
+          <div className="form-group">
             <label htmlFor="type" className='flex'>Type<p className='text-red-400'>*</p></label>
-            <select id='type' {...register('type')} className="selector bg-transparent rounded-lg dark:bg-grey" defaultValue={ticket?.type || ""} >
-              <option value="" disabled>Select a type</option>
-              {taskTypes.map(type => (
-                <option key={type.id} value={type.id}>{type.task_type_name}</option>
-              ))}
-            </select>
+            <div className="flex gap-2">
+
+              <select id='type' {...register('type')} className="selector bg-transparent rounded-lg dark:bg-grey px-2" defaultValue={ticket?.type || ""} >
+                <option value="" disabled>Select a type</option>
+                {taskTypes.map(type => (
+                  <option key={type.id} value={type.id}>{type.task_type_name}</option>
+                ))}
+              </select>
+              <button type='button' className='m-auto rounded-lg dark:bg-grey selector px-3' onClick={() => setIsTypeModalOpen(true)}>Add new</button>
+
+            </div>
             {errors.type && <p className="error">{errors.type.message}</p>}
           </div>
 
@@ -177,6 +185,18 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
           </button>
         </form>
       </motion.div>
+
+      <CreateTicketTypeModal
+        isOpen={isTypeModalOpen}
+        onClose={() => setIsTypeModalOpen(false)}
+        onCreated={() => {
+          axios.get(`http://localhost:8008/api/v1/task-types/?projectId=${projectID}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          .then(response => setTaskTypes(response.data));
+        }}
+      />
+
     </Modal>
   );
 }

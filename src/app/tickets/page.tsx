@@ -8,7 +8,7 @@ import { LoginRequired } from "@/app/lib/auth";
 import SelectionToast from "@/app/components/SelectionToast";
 import ChangeTicketModal from "@/app/components/ChangeTicket";
 import { toast } from "sonner";
-import {Bug, FileText, User, CalendarDays, Clock, Bell, Info, Search, MoreHorizontal, Dock, Filter} from "lucide-react";
+import {Bug, FileText, User, CalendarDays, Clock, Bell, Search, MoreHorizontal, Dock, Filter,  } from "lucide-react";
 import '@/app/styles/globals.scss';
 import '@/app/styles/mixins.scss';
 
@@ -106,7 +106,7 @@ export default function TicketsPage() {
                 </div>
 
 
-                <div className="overflow-x-auto p-2 bg-violet-500/50 rounded-lg">
+                <div className="overflow-x-auto p-2 bg-violet-500/50 rounded-lg border-t-8 border-violet-500">
                     <table className="min-w-full border border-gray-900">
                         <thead>
                         <tr>
@@ -166,12 +166,37 @@ export default function TicketsPage() {
                                         onChange={() => handleSelect(task.id)}
                                     />
                                 </td>
-                                <td className="border px-4 py-2"><p
+                                <td className="border px-4 py-2 w-10"><p
                                     className='bg-white/25 p-1 rounded-md'>{task.type_name}</p></td>
                                 <td className="border px-4 py-2">{task.title}</td>
                                 <td className="border px-4 py-2">{task.reporter_name}</td>
-                                <td className="border px-4 py-2 w-40"><p
-                                    className='bg-white/25 p-1 rounded-md text-center'>{task.deadline}</p></td>
+                                <td className="border px-4 py-2 w-40 relative group">
+                                    <input
+                                        type="date"
+                                        className='bg-white/25 p-1 rounded-md text-center border-none w-36 cursor-pointer'
+                                        defaultValue={task.deadline}
+                                        onChange={async (e) => {
+                                        const newDate = e.target.value;
+                                        try {
+                                            const token = localStorage.getItem("access_token");
+                                            await axios.patch(`http://127.0.0.1:8008/api/v1/tasks/${task.id}/`, {
+                                            deadline: newDate
+                                            }, {
+                                            headers: { Authorization: `Bearer ${token}` }
+                                            });
+
+                                            setTasks(prevTasks =>
+                                            prevTasks.map(t => t.id === task.id ? { ...t, deadline: newDate } : t)
+                                            );
+                                            toast.success("Deadline updated!");
+                                        } catch (error) {
+                                            toast.error("Failed to update deadline");
+                                            console.error("Deadline update error:", error);
+                                        }
+                                        }}
+                                    />
+                                    </td>
+
                                 <td className="border px-4 py-2 w-40"><p
                                     className='bg-white/25 p-1 rounded-md text-center'>{task.created_at}</p></td>
                                 <td className="border px-4 py-2 text-center">

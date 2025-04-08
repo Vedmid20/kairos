@@ -8,6 +8,7 @@ import ComboBoxAnimation from '@/app/components/animations/ComboBoxAnimation'
 import '@/app/styles/globals.scss';
 import '@/app/styles/mixins.scss';
 import { useRouter } from "next/navigation";
+import { Activity, User, UserCogIcon, LogOut } from 'lucide-react';
 
 export default function GetAvatar() {
     const [token, setToken] = useState<string | null>(null);
@@ -67,10 +68,10 @@ export default function GetAvatar() {
     }, []);
 
     const menuItems = [
-        { label: "Profile", action: () => router.push('/profile') },
-        { label: "Activity", action: () => router.push('/activity') },
-        { label: "Settings", action: () => router.push('/settings') },
-        { label: "Log Out", action: () => handleLogOut() },
+        { label: "Profile", action: () => router.push('/profile'), icon: <User /> },
+        { label: "Activity", action: () => router.push('/activity'), icon: <Activity /> },
+        { label: "Settings", action: () => router.push('/settings'), icon: <UserCogIcon /> },
+        { label: "Log Out", action: () => handleLogOut(), icon: <LogOut /> },
     ];
 
     const handleLogOut = () => {
@@ -100,7 +101,8 @@ export default function GetAvatar() {
                                     item.action();
                                     setIsOpen(false);
                                 }}
-                                className="block w-full text-left p-2 hover:bg-black/20 cursor-pointer transition-all">
+                                className="flex gap-3 w-full text-left p-3 hover:bg-black/20 cursor-pointer transition-all">
+                                    {item.icon}
                                 {item.label}
                             </button>
                         ))}
