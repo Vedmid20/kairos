@@ -14,7 +14,7 @@ import NotificationsDropdown from "@/app/components/header_components/Notificati
 export default function Header() {
     const pathname = usePathname();
     const [selectedProject, setSelectedProject] = useState<string | null>(null);
-    const hiddenRoutes = ["/log-in", "/sign-up", "/optional-info", "/create-project"];
+    const hiddenRoutes = ["/log-in", "/sign-up", "/optional-info", "/create-project", "projects"];
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => setIsModalOpen(true);

@@ -34,7 +34,7 @@ const CurrentProject = () => {
         <div className="flex items-center gap-2 cursor-default">
             {project ? (
                 <>
-                    <img src={project.icon} alt="Project Icon" className="w-8 h-8 object-cover rounded-lg" />
+                    <img src={project.icon} alt="Project Icon" className="w-12 h-12 object-cover rounded-lg" />
                     <h2 className="text-[1.2rem]">{project.name}</h2>
                 </>
             ) : (

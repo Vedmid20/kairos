@@ -11,7 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const hiddenRoutes = ["/log-in", "/sign-up", "/optional-info", "/create-project", "/loading", "/not-found"];
+  const hiddenRoutes = ["/log-in", "/sign-up", "/optional-info", "/create-project", "/loading", "/not-found", "projects"];
   const isAuthPage = hiddenRoutes.includes(pathname);
 
   return (

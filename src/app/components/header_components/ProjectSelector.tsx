@@ -7,6 +7,7 @@ import CurrentProject from "@/app/components/CurrentProject";
 import Link from 'next/link';
 import { GoArrowDown } from "react-icons/go";
 import { jwtDecode } from "jwt-decode";
+import { router } from "next/client";
 
 interface Project {
     id: string;
@@ -142,7 +143,7 @@ export default function ProjectSelector({ onSelect }: { onSelect: (id: string) =
 
                         <div className="">
                             <button className="block w-full text-left p-2 hover:bg-black/20 cursor-pointer transition-all">
-                                <p className='ml-2'>View all projects</p>
+                                <Link href={'/projects'} className='ml-2'>View all projects</Link>
                             </button>
                             <button className="block w-full text-left p-2 hover:bg-black/20 cursor-pointer transition-all">
                                 <Link href={'/create-project'} className='ml-2'>Create project</Link>

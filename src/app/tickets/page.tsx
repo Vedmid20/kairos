@@ -167,7 +167,7 @@ export default function TicketsPage() {
                                     />
                                 </td>
                                 <td className="border px-4 py-2 w-10"><p
-                                    className='bg-white/25 p-1 rounded-md'>{task.type_name}</p></td>
+                                    className='bg-white/25 p-1 rounded-md text-center'>{task.type_name}</p></td>
                                 <td className="border px-4 py-2">{task.title}</td>
                                 <td className="border px-4 py-2">{task.reporter_name}</td>
                                 <td className="border px-4 py-2 w-40 relative group">

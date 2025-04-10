@@ -70,7 +70,7 @@ export default function ShowMembers({ projectId }: ShowMembersProps) {
                   <p className="text-[1.5rem] mt-[1rem]">{user.username}</p>
                 </div>
                 <div className="bg-white/0 w-auto rounded-lg p-3">
-                  <p className="text-sm border-b mb-2 pb-2 border-black/50 dark:border-white/75">Email: {user.email || "None"}</p>
+                  <p className="text-sm border-b-2 mb-2 pb-2 border-black/50 dark:border-white/75">Email: {user.email || "None"}</p>
                   <p className="text-xs text-black/50 dark:text-white/75">Position: {user.position || "None"}</p>
                   <p className="text-xs text-black/50 dark:text-white/75">Department: {user.department || "None"}</p>
                   <p className="text-xs text-black/50 dark:text-white/75">Organization: {user.organization || "None"}</p>

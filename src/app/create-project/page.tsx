@@ -24,7 +24,13 @@ const schema = yup.object({
     .matches(/^[a-zA-Z0-9]+$/, 'Project prefix can only letters or numbers')
     .min(2, 'Prefix must be at least 2 characters long')
     .max(5, 'Prefix cant be longer than 5 charcters')
-    .required('Prefix is required')
+    .required('Prefix is required'),
+  project_desc: yup
+    .string()
+    .matches(/^[a-zA-Z0-9 !?,._-]+$/, 'Project description can only letters or numbers')
+    .min(10, 'Description must be at least 10 characters long')
+    .max(200, 'Description cant be longer than 200 charcters')
+    .required('Description is required'),
 });
 
 const CreateProjectPage = () => {
@@ -74,7 +80,7 @@ const CreateProjectPage = () => {
     }
   };
 
-  const onSubmit = async (data: { name: string, project_prefix: string }) => {
+  const onSubmit = async (data: { name: string, project_prefix: string, project_desc: string }) => {
     if (!userId) {
       setCreateProjectError("User ID is missing.");
       return;
@@ -100,7 +106,8 @@ const CreateProjectPage = () => {
           name: data.name,
           lead: userId,
           icon: base64Image,
-          project_prefix: data.project_prefix
+          project_prefix: data.project_prefix,
+          project_desc: data.project_desc,
         },
           {
             headers: {
@@ -142,6 +149,17 @@ const CreateProjectPage = () => {
                 placeholder='Enter project name'
               />
               {errors.name && <p className="error">{errors.name.message}</p>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="project_desc" className='flex'>Project Description<p className='text-red-400'>*</p></label>
+              <textarea
+                  className='max-h-32 min-h-10 p-2 text-sm'
+                  id="project_desc"
+                {...register('project_desc', { required: 'Project description is required' })}
+                placeholder='Enter description'
+              />
+              {errors.project_desc && <p className="error">{errors.project_desc.message}</p>}
             </div>
 
             <div className="form-group">

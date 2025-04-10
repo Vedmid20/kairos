@@ -94,17 +94,27 @@ export default function GetAvatar() {
             {isOpen && (
                 <ComboBoxAnimation>
                     <div ref={menuRef} className="absolute top-7 right-0 bg-white/50 backdrop-blur-md rounded-b-lg shadow-md w-52 z-10 dark:bg-grey/50 py-2">
-                        {menuItems.map((item) => (
-                            <button
-                                key={item.label}
-                                onClick={() => {
-                                    item.action();
-                                    setIsOpen(false);
-                                }}
-                                className="flex gap-3 w-full text-left p-3 hover:bg-black/20 cursor-pointer transition-all">
-                                    {item.icon}
-                                {item.label}
-                            </button>
+                        {menuItems.map((item) => ( item.label === "Log Out" ? 
+                        (<button
+                            key={item.label}
+                            onClick={() => {
+                                item.action();
+                                setIsOpen(false);
+                            }}
+                            className="flex gap-3 w-full text-red-500 text-left p-3 hover:bg-red-500/10 cursor-pointer transition-all">
+                                {item.icon}
+                            {item.label}
+                        </button>) : 
+                        (<button
+                            key={item.label}
+                            onClick={() => {
+                                item.action();
+                                setIsOpen(false);
+                            }}
+                            className="flex gap-3 w-full text-left p-3 hover:bg-black/20 cursor-pointer transition-all">
+                                {item.icon}
+                            {item.label}
+                        </button>)
                         ))}
                     </div>
                 </ComboBoxAnimation>

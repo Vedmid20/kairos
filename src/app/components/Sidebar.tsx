@@ -10,7 +10,7 @@ import CurrentProject from "@/app/components/CurrentProject";
 
 export default function Sidebar() {
     const pathname = usePathname();
-    const hiddenRoutes = ["/log-in", "/sign-up", "/optional-info", "/create-project", "/loading", "/not-found"];
+    const hiddenRoutes = ["/log-in", "/sign-up", "/optional-info", "/create-project", "/loading", "/not-found", "projects"];
 
     if (hiddenRoutes.includes(pathname)) return null;
 
@@ -21,7 +21,7 @@ export default function Sidebar() {
         { href: "/board", label: "Board", icon: <Columns3 /> },
         { href: "/tickets", label: "Tickets", icon: <List /> },
         { href: "/members", label: "Members", icon: <Users /> },
-        { href: "/", label: "Meetings", icon: <Speech /> },
+        { href: "/meetings", label: "Meetings", icon: <Speech /> },
         { href: "/", label: "Project settings", icon: <CogIcon /> },
     ];
 
