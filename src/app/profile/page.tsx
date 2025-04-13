@@ -148,8 +148,8 @@ const ProfilePage = () => {
     <div className="p-5">
       <title>Profile</title>
       <h1 className="text-1xl mb-4">Profile</h1>
-      <div className="p-4 rounded-lg flex bg-violet-500/50">
-        <div className=" p-10 w-[30rem] border border-black/50 dark:border-white/50 rounded-lg">
+      <div className="p-4 rounded-lg flex ">
+        <div className=" p-10 w-[30rem] rounded-lg border border-t-8 border-violet-500">
           <div className="relative w-36 h-36 mt-4 cursor-pointer" onClick={() => fileInputRef.current?.click()}>
             <img src={preview || user.avatar} alt="Avatar"
                  className="w36 h-36 object-cover rounded-full transition-all hover:opacity-80 border-violet-500 border-2"/>
@@ -160,7 +160,7 @@ const ProfilePage = () => {
           </div>
           <input type="file" accept="image/*" ref={fileInputRef} className="hidden" onChange={handleFileChange}/>
           <h2 className="text-[2rem] mt-5 font-semibold mb-2">{user.username}</h2>
-          <h5 className='border-b border-white dark:border-white/50 mb-2'>Information</h5>
+          <h5 className='border-b border-black/50 dark:border-white/50 mb-2'>Information</h5>
           <div className="gap-10 ml-3">
             <div className="flex m-auto">
               <Briefcase className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2"/>
@@ -186,7 +186,7 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          <h5 className='border-b border-white dark:border-white/50 mb-3 mt-2'>Contacts</h5>
+          <h5 className='border-b border-black/50 dark:border-white/50 mb-3 mt-2'>Contacts</h5>
           <div className="flex ml-3">
             <AtSign className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2" />
             <h5 className='p-1 cursor-default'>{user.email}</h5>

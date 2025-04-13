@@ -30,7 +30,6 @@ export default function ShowMembers({ projectId }: ShowMembersProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(projectId, '@@@')
     const fetchMembers = async () => {
       try {
         const [membersRes, usersRes] = await Promise.all([
@@ -61,9 +60,9 @@ export default function ShowMembers({ projectId }: ShowMembersProps) {
   return (
     <div>
       {users.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {users.map(user => (
-            <div key={user.id} className="p-4 bg-violet-500/50 rounded-lg relative shadow flex items-center border-t-8 border-t-violet-500">
+            <div key={user.id} className="p-4 dark:bg-black/5 rounded-lg relative shadow flex items-center border-t-8 border border-violet-500">
               <div className="w-full">
                 <div className="flex gap-4">
                   <img src={user.avatar} alt={user.username} className="w-16 h-16 rounded-full mb-2" />

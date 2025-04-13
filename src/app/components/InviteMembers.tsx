@@ -96,7 +96,6 @@ export default function InviteMembersModal({ isOpen, onClose }: { isOpen: boolea
         user: selectedUser.id,
         project: projectId, 
       });
-      console.log("User added to project", response.data);
       onClose();
     } catch {
       toast.error(`User ${searchInput} project member`)

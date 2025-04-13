@@ -17,7 +17,7 @@ export default function MembersPage() {
 
 
     return (
-        <div className='p-5'>
+        <div className=''>
             <title>Members</title>
             <LoginRequired />
             <h1 className="text-1xl mb-4">Members</h1>

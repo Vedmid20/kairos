@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, List, Columns3, CogIcon, CalendarClock, LucideChartNoAxesCombined, ChartGantt, Speech } from 'lucide-react';
+import { Users, List, Columns3, CogIcon, CalendarClock, LucideChartNoAxesCombined, ChartGantt, Speech, NotebookText } from 'lucide-react';
 import dynamic from "next/dynamic";
 import Lottie from 'lottie-react';
 import board from '../../lotties/board.json'
@@ -19,7 +19,8 @@ export default function Sidebar() {
         { href: "/", label: "Timeline", icon: <ChartGantt /> },
         { href: "/", label: "Calendar", icon: <CalendarClock /> },
         { href: "/board", label: "Board", icon: <Columns3 /> },
-        { href: "/tickets", label: "Tickets", icon: <List /> },
+        { href: "/list", label: "List", icon: <List /> },
+        { href: "/tickets", label: "Tickets", icon: <NotebookText /> },
         { href: "/members", label: "Members", icon: <Users /> },
         { href: "/meetings", label: "Meetings", icon: <Speech /> },
         { href: "/", label: "Project settings", icon: <CogIcon /> },
@@ -32,7 +33,7 @@ return (
             <CurrentProject/>
         </div>
         <div className="flex justify-start ml-3 mt-5">
-            <h2>Main</h2>
+            <h2>Workspace</h2>
         </div>
         <ul className="flex-col justify-normal sidebar-buttons ml-2 mr-5 mt-2 border-t border-violet-400">
             {menuItems.map(({ href, label, icon }, index) => (
@@ -41,7 +42,6 @@ return (
                 className={`flex gap-2 ml-5 mt-2 px-4 py-2 rounded-md transition ${
                     pathname === href ? "bg-black/20 text-white" : "hover:bg-black/10"
                 }`}>
-
                     {icon}
                     {label}
                 </Link>

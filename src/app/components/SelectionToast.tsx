@@ -28,11 +28,11 @@ const SelectionToast: React.FC<SelectionToastProps> = ({ selectedCount, onDelete
 
   return (
     <>
-      <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 border-2 px-6 py-3 rounded-lg shadow-lg flex items-center gap-4 ">
+      <div className="fixed bottom-5 text-white left-1/2 bg-black/50 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg flex items-center gap-4 ">
         <span>{selectedCount} tickets selected</span>
         <button
           onClick={handleDeleteClick}
-          className="header-button p-2 px-4 rounded-lg hover:bg-red-500/50 hover:text-white flex gap-2">
+          className="text-white p-2 px-4 rounded-lg hover:bg-red-500/50 hover:text-white flex gap-2">
           <Trash/>Delete
         </button>
       </div>
