@@ -106,17 +106,16 @@ export default function ListPage() {
                 </div>
 
 
-                <div className="overflow-x-auto p-2 bg-violet-500/50 rounded-lg border-t-8 border-violet-500">
-                    <table className="min-w-full border border-gray-900">
-                        <thead>
+                <div className="overflow-x-auto rounded-lg border-t-8 border border-violet-500">
+                    <table className="min-w-full ">
+                        <thead className="border-b-2 border-violet-500">
                         <tr>
-                            <th className="border px-4 py-2 w-10">
+                            <th className="border px-4 py-2 pt-3 m-auto w-10">
                                 <input
                                     type="checkbox"
-                                    className='w-5 h-5'
+                                    className='w-5 h-5 text--500 border-violet-500 rounded-lg focus:ring-2 focus:ring-violet-500'
                                     onChange={(e) => setSelectedTickets(e.target.checked ? tasks.map(task => task.id) : [])}
-                                    checked={selectedTickets.length === tasks.length && tasks.length > 0}
-                                />
+                                    checked={selectedTickets.length === tasks.length && tasks.length > 0}/>
                             </th>
                             <th className="border px-4 py-2 text-left">
                                 <div className="flex m-auto gap-2">
@@ -161,7 +160,7 @@ export default function ListPage() {
                                 <td className="border px-4 py-2 text-center">
                                     <input
                                         type="checkbox"
-                                        className="w-5 h-5"
+                                        className="w-5 h-5 text--500 border-violet-500 rounded-lg focus:ring-2 focus:ring-violet-500"
                                         checked={selectedTickets.includes(task.id)}
                                         onChange={() => handleSelect(task.id)}
                                     />
@@ -200,7 +199,7 @@ export default function ListPage() {
                                 <td className="border px-4 py-2 w-40"><p
                                     className='bg-white/25 p-1 rounded-md text-center'>{task.created_at}</p></td>
                                 <td className="border px-4 py-2 text-center">
-                                    <input type="checkbox" className='w-5 h-5'/>
+                                    <input type="checkbox" className='w-5 h-5 text--500 border-violet-500 rounded-lg focus:ring-2 focus:ring-violet-500'/>
                                 </td>
                                 <td className="border px-4 py-2 w-10">
                                     <button

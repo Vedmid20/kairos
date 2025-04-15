@@ -1,10 +1,11 @@
 'use client';
 
-import { Filter, Search, Pen, Trash } from "lucide-react";
+import { Filter, Search, Pen, Trash, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { motion } from 'framer-motion';
 
 interface Task {
   id: string;
@@ -35,6 +36,7 @@ const TicketPage = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [editingComment, setEditingComment] = useState<Comment | null>(null);
   const [newCommentText, setNewCommentText] = useState("");
+  const [commentToDelete, setCommentToDelete] = useState<Comment | null>(null);
   const token: string | null = localStorage.getItem("access_token");
   const decoded: any = jwtDecode(token!);
 
@@ -138,7 +140,7 @@ const TicketPage = () => {
 
   const handleEditComment = (comment: Comment) => {
     setEditingComment(comment);
-    setNewCommentText(comment.text); // Set the initial value for editing
+    setNewCommentText(comment.text);
   };
 
   const handleUpdateComment = async () => {
@@ -162,7 +164,7 @@ const TicketPage = () => {
           comment.id === editingComment.id ? { ...comment, text: newCommentText } : comment
         )
       );
-      setEditingComment(null); // Close the edit modal
+      setEditingComment(null);
     } catch (err: any) {
       if (err.response) {
         console.error("Error updating the comment", err.response.data);
@@ -296,7 +298,7 @@ const TicketPage = () => {
                             onClick={() => handleEditComment(comment)}/>
                           <Trash
                             className="w-6 cursor-pointer transition-all hover:bg-red-400 rounded-full px-1"
-                            onClick={() => handleDeleteComment(comment.id)}/>
+                            onClick={() => setCommentToDelete(comment)}/>
                         </div>
                       )}
                     </div>
@@ -310,10 +312,24 @@ const TicketPage = () => {
 
       {editingComment && (
         <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black/50">
-          <div className="bg-white dark:bg-grey p-6 rounded-lg w-[50rem] h-[20rem]">
-            <h3 className="text-xl font-semibold mb-4">Edit Comment</h3>
+          <div className="bg-white dark:bg-grey p-6 rounded-lg w-[40rem]">
+            <div className="flex justify-between">
+              <h3 className="text-xl font-semibold mb-4">Edit Comment</h3>
+              <X className="cursor-pointer" onClick={() => setEditingComment(null)}/>
+            </div>
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={{
+                  hidden: { opacity: 0, y: '5%' },
+                  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 75, damping: 7 } },
+                  exit: { opacity: 0, y: '25%' },
+                }}
+                transition={{ duration: 0.3 }}
+                className="relative z-50">
             <textarea
-              className="w-full p-2 border rounded mb-4"
+              className="w-full p-2 border rounded mb-4 !transform-none min-h-[10rem] max-h-[15rem]"
               value={newCommentText}
               onChange={(e) => setNewCommentText(e.target.value)}
             />
@@ -322,9 +338,49 @@ const TicketPage = () => {
                   className="bg-violet-600 text-white px-4 py-2 rounded"
                   onClick={handleUpdateComment}>Save</button>
               <button
-                className="bg-white/15 px-4 py-2 rounded"
+                className="bg-black/20 dark:bg-white/15 px-4 py-2 rounded hover:bg-black/15 dark:hover:bg-white/20"
                 onClick={() => setEditingComment(null)}>Cancel</button>
             </div>
+            </motion.div>
+          </div>
+        </div>
+      )}
+
+      {commentToDelete && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black/50 z-50">
+          <div className="bg-white dark:bg-grey p-6 rounded-lg w-[30rem]">
+            <div className="flex justify-between">
+              <h3 className="text-xl font-semibold mb-4">Confirm Delete</h3>
+              <X className="cursor-pointer" onClick={() => setCommentToDelete(null)}/>
+            </div>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={{
+                hidden: { opacity: 0, y: '5%' },
+                visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 75, damping: 7 } },
+                exit: { opacity: 0, y: '25%' },
+              }}
+              transition={{ duration: 0.3 }}
+              className="relative z-50">
+            <p>Are you sure you want to delete this comment?</p>
+            <div className="flex justify-start gap-2 mt-6">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                onClick={() => {
+                  handleDeleteComment(commentToDelete.id);
+                  setCommentToDelete(null);
+                }}>
+                Delete
+              </button>
+              <button
+                className="bg-black/20 dark:bg-white/15 px-4 py-2 rounded hover:bg-black/15 dark:hover:bg-white/20"
+                onClick={() => setCommentToDelete(null)}>
+                Cancel
+              </button>
+            </div>
+            </motion.div>
           </div>
         </div>
       )}

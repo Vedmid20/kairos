@@ -28,7 +28,7 @@ export default function Sidebar() {
 
 
 return (
-    <div className="flex-col p-3 max-w-80 min-w-72 sidebar h-full bg-black/15">
+    <div className="flex-col p-3 max-w-80 min-w-72 sidebar h-full overflow-auto bg-black/5 dark:bg-black/15">
         <div className="ml-3 my-10">
             <CurrentProject/>
         </div>
