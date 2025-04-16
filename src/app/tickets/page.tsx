@@ -1,11 +1,12 @@
 'use client';
 
-import { Filter, Search, Pen, Trash, X } from "lucide-react";
+import { Filter, Search, Pen, Trash, X, Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { motion } from 'framer-motion';
+import CreateTicketModal from "../components/CreateTicket";
 
 interface Task {
   id: string;
@@ -37,9 +38,14 @@ const TicketPage = () => {
   const [editingComment, setEditingComment] = useState<Comment | null>(null);
   const [newCommentText, setNewCommentText] = useState("");
   const [commentToDelete, setCommentToDelete] = useState<Comment | null>(null);
+  const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
   const token: string | null = localStorage.getItem("access_token");
   const decoded: any = jwtDecode(token!);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  
   useEffect(() => {
     if (token) {
       const decoded: any = jwtDecode(token);
@@ -174,6 +180,10 @@ const TicketPage = () => {
     }
   };
 
+  const handleShowDescription = () => {
+    setIsDescriptionModalOpen(true);
+  };
+
   return (
     <div className="mb-10">
       <h1 className="mb-4">Tickets</h1>
@@ -201,7 +211,8 @@ const TicketPage = () => {
       </div>
 
       <div className="flex gap-5">
-        <div className="flex flex-col w-72 border h-full max-h-[40rem] rounded-lg border-violet-500 border-t-8 overflow-auto">
+        <div className="">
+        <div className="flex flex-col w-72 border h-full max-h-[40rem] rounded-t-lg border-violet-500 border-t-8 overflow-auto relative">
           {tasks.map(task => (
             <div
               key={task.id}
@@ -215,6 +226,11 @@ const TicketPage = () => {
               </p>
             </div>
           ))}
+        </div>
+        <CreateTicketModal isOpen={isModalOpen} onClose={closeModal}>
+                            <div className=""></div>
+          </CreateTicketModal>
+          <button className="p-1 bg-violet-500 text-white w-full rounded-b-lg hover:bg-violet-600" onClick={openModal}><Plus className="mx-auto"/></button>
         </div>
 
         <div className="flex-1 max-h-[40rem] border rounded-lg p-5 shadow bg-white dark:bg-black/10 word-break h-full border-violet-500 border-t-8">
@@ -232,7 +248,7 @@ const TicketPage = () => {
                   {selectedTask.reporter_name}
                 </span>
               </p>
-              <button className="header-button">Show Description</button>
+              <button className="header-button" onClick={handleShowDescription}>Show Description</button>
               <p className="mb-2 bg-black/10 dark:bg-white/15 p-2 rounded-lg border-t-8 border-black/10 dark:border-white/20">
                 {selectedTask.description.length > 250
                   ? `${selectedTask.description.slice(0, 250)}...`
@@ -269,7 +285,7 @@ const TicketPage = () => {
             <p className="">Choose a ticket</p>
           )}
         </div>
-        <div className="w-96 p-5 text-center border-violet-500 border-t-8 h-[40rem] border rounded-lg overflow-auto">
+        <div className="w-96 p-5 text-center bg-white dark:bg-black/10 border-violet-500 border-t-8 h-[40rem] border rounded-lg overflow-auto">
           <h3 className="text-2xl font-semibold mb-2">Comments</h3>
           {comments.length === 0 ? (
             <p className="text-gray-500">No comments yet.</p>
@@ -380,6 +396,39 @@ const TicketPage = () => {
                 Cancel
               </button>
             </div>
+            </motion.div>
+          </div>
+        </div>
+      )}
+
+      {isDescriptionModalOpen && selectedTask && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black/50 z-50">
+          <div className="bg-white dark:bg-grey p-6 rounded-lg w-[50rem] max-h-[80vh] overflow-auto">
+            <div className="flex justify-between mb-4">
+              <h3 className="text-xl font-semibold">Ticket Description</h3>
+              <X className="cursor-pointer" onClick={() => setIsDescriptionModalOpen(false)}/>
+            </div>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={{
+                hidden: { opacity: 0, y: '5%' },
+                visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 75, damping: 7 } },
+                exit: { opacity: 0, y: '25%' },
+              }}
+              transition={{ duration: 0.3 }}
+              className="relative z-50">
+              <div className="bg-black/10 dark:bg-white/10 p-4 rounded-lg border-t-8 border-black/15 dark:border-white/15">
+                <p className="whitespace-pre-wrap">{selectedTask.description}</p>
+              </div>
+              <div className="flex justify-end mt-6">
+                <button
+                  className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700"
+                  onClick={() => setIsDescriptionModalOpen(false)}>
+                  Close
+                </button>
+              </div>
             </motion.div>
           </div>
         </div>

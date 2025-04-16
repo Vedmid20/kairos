@@ -27,7 +27,7 @@ const schema = yup.object({
   description: yup.string()
     .matches(/^[a-zA-Z0-9 _.,!?@*%]+$/, 'Description can only contain letters, numbers and !?@*%')
     .min(5, 'Description must be at least 5 characters long')
-    .max(1000, 'Description cant be longer than 1000 characters')
+    .max(2500, 'Description cant be longer than 2500 characters')
     .required('Description is required'),
   deadline: yup.string().required('Deadline is required'),
   type: yup.string().required('Type is required'),
@@ -118,7 +118,7 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
       closeTimeoutMS={200}>
       
-      <div className="flex">
+      <div className="flex z-50">
         <h2 className="text-xl">Create a new ticket</h2>
         <button
           onClick={onClose}

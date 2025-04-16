@@ -37,3 +37,32 @@ label{
 .form-button{
   @include form-button
 }
+
+.fc-header-toolbar {
+  .fc-toolbar-chunk{
+      .fc-button{
+        background-color: $purple;
+        transition: all .2s ease-out;
+        &:hover{
+          background-color: $light-purple;
+        }
+        &:active{
+          background-color: $light-grey;
+        }
+        &:current{
+          background-color: red;
+        }
+      }
+    
+  }
+}
+
+.fc-scrollgrid{
+  thead{
+    tr{
+      background-color: $light-purple;
+      color: white;
+    }
+
+  }
+}

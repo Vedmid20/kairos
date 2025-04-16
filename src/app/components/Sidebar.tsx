@@ -17,7 +17,7 @@ export default function Sidebar() {
     const menuItems = [
         { href: "/", label: "Statistics", icon: <LucideChartNoAxesCombined /> },
         { href: "/", label: "Timeline", icon: <ChartGantt /> },
-        { href: "/", label: "Calendar", icon: <CalendarClock /> },
+        { href: "/calendar", label: "Calendar", icon: <CalendarClock /> },
         { href: "/board", label: "Board", icon: <Columns3 /> },
         { href: "/list", label: "List", icon: <List /> },
         { href: "/tickets", label: "Tickets", icon: <NotebookText /> },

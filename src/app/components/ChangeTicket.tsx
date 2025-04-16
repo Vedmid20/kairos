@@ -27,7 +27,7 @@ const schema = yup.object({
   description: yup.string()
     .matches(/^[a-zA-Z0-9 _.,!?@*%]+$/, 'Description can only contain letters, numbers and !?@*%')
     .min(5, 'Description must be at least 5 characters long')
-    .max(1000, 'Description cant be longer than 1000 characters')
+    .max(2500, 'Description cant be longer than 2500 characters')
     .required('Description is required'),
   deadline: yup.string().required('Deadline is required'),
   type: yup.string().required('Type is required'),
