@@ -43,26 +43,24 @@ label{
       .fc-button{
         background-color: $purple;
         transition: all .2s ease-out;
+        border: none;
         &:hover{
           background-color: $light-purple;
         }
         &:active{
           background-color: $light-grey;
         }
-        &:current{
-          background-color: red;
-        }
       }
     
   }
 }
 
-.fc-scrollgrid{
+.fc-scrollgrid-section{
+  border-top: 12px solid $purple;
   thead{
     tr{
       background-color: $light-purple;
       color: white;
     }
-
   }
 }
