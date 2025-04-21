@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, List, Columns3, CogIcon, CalendarClock, LucideChartNoAxesCombined, ChartGantt, Speech, NotebookText } from 'lucide-react';
+import { Users, List, Columns3, CogIcon, CalendarClock, LucideChartNoAxesCombined, Speech, NotebookText } from 'lucide-react';
 import dynamic from "next/dynamic";
 import Lottie from 'lottie-react';
 import board from '../../lotties/board.json'
@@ -16,7 +16,6 @@ export default function Sidebar() {
 
     const menuItems = [
         { href: "/", label: "Statistics", icon: <LucideChartNoAxesCombined /> },
-        { href: "/", label: "Timeline", icon: <ChartGantt /> },
         { href: "/calendar", label: "Calendar", icon: <CalendarClock /> },
         { href: "/board", label: "Board", icon: <Columns3 /> },
         { href: "/list", label: "List", icon: <List /> },
@@ -37,14 +36,14 @@ return (
         </div>
         <ul className="flex-col justify-normal sidebar-buttons ml-2 mr-5 mt-2 border-t border-violet-400">
             {menuItems.map(({ href, label, icon }, index) => (
-                <li className="rounded-md">
-                <Link href={href} key={`${href}-${index}`}
-                className={`flex gap-2 ml-5 mt-2 px-4 py-2 rounded-md transition ${
-                    pathname === href ? "bg-black/20 text-white" : "hover:bg-black/10"
-                }`}>
-                    {icon}
-                    {label}
-                </Link>
+                <li key={`${href}-${index}`} className="rounded-md">
+                    <Link href={href}
+                          className={`flex gap-2 ml-5 mt-2 px-4 py-2 rounded-md transition ${
+                              pathname === href ? "bg-black/20 text-white" : "hover:bg-black/10"
+                          }`}>
+                        {icon}
+                        {label}
+                    </Link>
                 </li>
             ))}
         </ul>

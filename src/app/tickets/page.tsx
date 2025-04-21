@@ -17,6 +17,7 @@ interface Task {
   reporter_name: string;
   deadline: string;
   type_name: string;
+  project_task_id: string;
 }
 
 interface Comment {
@@ -96,9 +97,6 @@ const TicketPage = () => {
 
   const handleCommentSubmit = async () => {
     if (!selectedTask || !comment.trim()) return;
-
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
 
     try {
       await axios.post(
@@ -219,15 +217,16 @@ const TicketPage = () => {
               className="border p-4 rounded-lg shadow bg-white dark:bg-black/10 cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10"
               onClick={() => setSelectedTask(task)}>
               <h2 className="text-md font-semibold">{task.title}</h2>
-              <p className="">
+              <p className="flex gap-2 mt-2">
                 <span className="bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto">
                   {task.type_name}
                 </span>
+                <span className='bg-black/10 dark:bg-white/10 px-3 rounded-full text-black dark:text-white my-auto'>{task.project_task_id}</span>
               </p>
             </div>
           ))}
         </div>
-        <CreateTicketModal isOpen={isModalOpen} onClose={closeModal}>
+          <CreateTicketModal isOpen={isModalOpen} onClose={closeModal}>
                             <div className=""></div>
           </CreateTicketModal>
           <button className="p-1 bg-violet-500 text-white w-full rounded-b-lg hover:bg-violet-600" onClick={openModal}><Plus className="mx-auto"/></button>
@@ -236,9 +235,12 @@ const TicketPage = () => {
         <div className="flex-1 max-h-[40rem] border rounded-lg p-5 shadow bg-white dark:bg-black/10 word-break h-full border-violet-500 border-t-8">
           {selectedTask ? (
             <>
-              <p className="mb-2">
+              <p className="mb-3 flex gap-2">
                 <span className="bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto">
                   {selectedTask.type_name}
+                </span>
+                <span className='bg-black/10 dark:bg-white/10 px-3 rounded-full text-black dark:text-white my-auto'>
+                  {selectedTask.project_task_id}
                 </span>
               </p>
               <h2 className="text-2xl font-bold mb-1">{selectedTask.title}</h2>

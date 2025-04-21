@@ -76,3 +76,9 @@ h2{
     @apply bg-background text-foreground;
     }
 }
+
+nextjs-portal,
+#__next-build-watcher,
+#__next-error {
+  display: none !important;
+}

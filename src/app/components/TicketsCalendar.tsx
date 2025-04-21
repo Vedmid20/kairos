@@ -6,7 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
-import TaskModal from '@/app/components/ShowTicket'; // заміни шлях, якщо треба
+import TaskModal from '@/app/components/ShowTicket';
 
 interface Task {
   id: number;
