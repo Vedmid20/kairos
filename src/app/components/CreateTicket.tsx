@@ -20,12 +20,10 @@ if (typeof window !== 'undefined') {
 
 const schema = yup.object({
   title: yup.string()
-    .matches(/^[a-zA-Z0-9 _.,!]+$/, 'Title can only contain letters, numbers')
     .min(2, 'Title must be at least 2 characters long')
     .max(200, 'Title cant be longer than 200 characters')
     .required('Title is required'),
   description: yup.string()
-    .matches(/^[a-zA-Z0-9 _.,!?@*%]+$/, 'Description can only contain letters, numbers and !?@*%')
     .min(5, 'Description must be at least 5 characters long')
     .max(2500, 'Description cant be longer than 2500 characters')
     .required('Description is required'),
@@ -114,7 +112,7 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Create Ticket Modal"
-      className="relative z-50 max-w-lg w-full p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
+      className="relative max-w-lg w-full p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
       closeTimeoutMS={200}>
       

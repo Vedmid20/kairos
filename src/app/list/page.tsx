@@ -8,7 +8,7 @@ import { LoginRequired } from "@/app/lib/auth";
 import SelectionToast from "@/app/components/SelectionToast";
 import ChangeTicketModal from "@/app/components/ChangeTicket";
 import { toast } from "sonner";
-import {Bug, FileText, User, CalendarDays, Clock, Bell, Search, MoreHorizontal, Dock, Filter,  } from "lucide-react";
+import { Bug, FileText, Megaphone, CalendarDays, Clock, Bell, Search, MoreHorizontal, Dock, Filter, CheckCircle, Hash } from "lucide-react";
 import '@/app/styles/globals.scss';
 import '@/app/styles/mixins.scss';
 
@@ -122,14 +122,24 @@ export default function ListPage() {
                                     <Bug size={16} className='my-auto'/> Type
                                 </div>
                             </th>
-                            <th className="border px-4 py-2 text-left">
+                            <th className="border px-4 py-2 text-left min-w-[7rem]">
+                                <div className="flex m-auto gap-2">
+                                    <Hash size={16} className='my-auto'/> ID
+                                </div>
+                            </th>
+                            <th className="border px-4 py-2 text-left min-w-[15rem] max-w-[25rem]">
                                 <div className="flex m-auto gap-2">
                                     <FileText size={16} className='my-auto'/> Title
                                 </div>
                             </th>
-                            <th className="border px-4 py-2 text-left">
+                            <th className="border px-4 py-2 text-left min-w-[10rem]">
                                 <div className="flex m-auto gap-2">
-                                    <User size={16} className='my-auto'/> Reporter
+                                    <Megaphone size={16} className='my-auto'/> Reporter
+                                </div>
+                            </th>
+                            <th className="border px-4 py-2 text-left min-w-[10rem]">
+                                <div className="flex m-auto gap-2">
+                                    <CheckCircle size={16} className='my-auto'/> Status
                                 </div>
                             </th>
                             <th className="border px-4 py-2 text-left">
@@ -137,7 +147,7 @@ export default function ListPage() {
                                     <CalendarDays size={16} className='my-auto'/> Deadline
                                 </div>
                             </th>
-                            <th className="border px-4 py-2 text-left">
+                            <th className="border px-4 py-2 text-left min-w-[10rem]">
                                 <div className="flex m-auto gap-2">
                                     <Clock size={16} className='my-auto'/> Created at
                                 </div>
@@ -166,9 +176,11 @@ export default function ListPage() {
                                     />
                                 </td>
                                 <td className="border px-4 py-2 w-10"><p
-                                    className='bg-white/25 p-1 rounded-md text-center'>{task.type_name}</p></td>
+                                    className=''><span className="bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto">{task.type_name}</span></p></td>
+                                <td className="border px-4 py-2"><span className="bg-black/10 dark:bg-white/10 px-3 rounded-full text-black dark:text-white my-auto">{task.project_task_id}</span></td>    
                                 <td className="border px-4 py-2">{task.title}</td>
                                 <td className="border px-4 py-2">{task.reporter_name}</td>
+                                <td className="border px-4 py-2">{task.status_name}</td>
                                 <td className="border px-4 py-2 w-40 relative group">
                                     <input
                                         type="date"

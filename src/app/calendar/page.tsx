@@ -6,9 +6,11 @@ const CalendarPage = async () => {
 
     return (
         <>
-            <h1>Calendar</h1>
-            <title>Calendar</title>
-            <TicketCalendar />
+            <div className="z-1 mb-20">
+                <h1>Calendar</h1>
+                <title>Calendar</title>
+                <TicketCalendar />
+            </div>
         </>
     )
 }

@@ -20,10 +20,13 @@ export default function Sidebar() {
         { href: "/board", label: "Board", icon: <Columns3 /> },
         { href: "/list", label: "List", icon: <List /> },
         { href: "/tickets", label: "Tickets", icon: <NotebookText /> },
-        { href: "/members", label: "Members", icon: <Users /> },
-        { href: "/meetings", label: "Meetings", icon: <Speech /> },
         { href: "/", label: "Project settings", icon: <CogIcon /> },
     ];
+
+    const menuItems2 = [
+        { href: "/members", label: "Members", icon: <Users /> },
+        { href: "/meetings", label: "Meetings", icon: <Speech /> },
+    ]
 
 
 return (
@@ -36,6 +39,22 @@ return (
         </div>
         <ul className="flex-col justify-normal sidebar-buttons ml-2 mr-5 mt-2 border-t border-violet-400">
             {menuItems.map(({ href, label, icon }, index) => (
+                <li key={`${href}-${index}`} className="rounded-md">
+                    <Link href={href}
+                          className={`flex gap-2 ml-5 mt-2 px-4 py-2 rounded-md transition ${
+                              pathname === href ? "bg-black/20 text-white" : "hover:bg-black/10"
+                          }`}>
+                        {icon}
+                        {label}
+                    </Link>
+                </li>
+            ))}
+        </ul>
+        <div className="flex justify-start ml-3 mt-5">
+            <h2>People</h2>
+        </div>
+        <ul className="flex-col justify-normal sidebar-buttons ml-2 mr-5 mt-2 border-t border-violet-400">
+            {menuItems2.map(({ href, label, icon }, index) => (
                 <li key={`${href}-${index}`} className="rounded-md">
                     <Link href={href}
                           className={`flex gap-2 ml-5 mt-2 px-4 py-2 rounded-md transition ${

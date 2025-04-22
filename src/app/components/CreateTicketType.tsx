@@ -55,7 +55,7 @@ export default function CreateTicketTypeModal({ isOpen, onClose, onCreated }) {
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Create Ticket Type Modal"
-      className="relative z-50 max-w-md w-full p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
+      className="relative z-30 max-w-md w-full p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
       closeTimeoutMS={200}>
 

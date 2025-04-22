@@ -1,11 +1,13 @@
 'use client';
 
 import Modal from 'react-modal';
-import {Pen, Trash, X} from 'lucide-react';
-import React, { useEffect, useState } from "react";
+import { Pen, Trash, X, Megaphone } from 'lucide-react';
+import React, { use, useEffect, useState } from "react";
 import axios from 'axios';
 import {jwtDecode} from "jwt-decode";
 import {motion} from "framer-motion";
+import ChangeTicketModal from './ChangeTicket';
+import '@/app/components/components-styles.scss'
 
 interface Task {
   id: number;
@@ -16,6 +18,7 @@ interface Task {
   updated_at: string;
   reporter_name: string;
   type_name: string;
+  project_task_id: string;
 }
 
 interface Comment {
@@ -44,6 +47,8 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
   const [editingComment, setEditingComment] = useState<Comment | null>(null);
   const [newCommentText, setNewCommentText] = useState("");
   const [commentToDelete, setCommentToDelete] = useState<Comment | null>(null);
+  const [projectTaskId, setProjectTaskId] = useState('');
+  const [selectedTicket, setSelectedTicket] = useState<Task | null>(null);
 
   useEffect(() => {
     if (token) {
@@ -54,9 +59,10 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
 
   useEffect(() => {
     if (task?.id && isOpen) {
-      console.log(task.id)
-      axios
-        .get(`http://127.0.0.1:8008/api/v1/comments/?task_id=${task.id}`)
+      console.log("task", task);
+      axios.get(`http://127.0.0.1:8008/api/v1/tasks/${task.id}`)
+        .then(res => setProjectTaskId(res.data.project_task_id))
+      axios.get(`http://127.0.0.1:8008/api/v1/comments/?task_id=${task.id}`)
         .then(res => setComments(res.data))
         .catch(err => console.error('Error fetching comments', err));
     }
@@ -148,42 +154,62 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
 
   if (!task) return null;
 
+  const openTicketModal = (task: Task) => {
+    setSelectedTicket(task);
+  };
+
+  const closeTicketModal = () => {
+      setSelectedTicket(null);
+  };
+
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="bg-white dark:bg-grey rounded-2xl shadow-xl w-[80rem] h-full max-h-[45rem] overflow-auto p-6 mx-auto m-auto relative outline-none"
-      overlayClassName="fixed inset-0 bg-black/50 flex items-start justify-center z-50">
+      className="bg-white z-50 dark:bg-grey rounded-2xl shadow-xl w-[80rem] h-full max-h-[45rem] overflow-auto p-6 mx-auto m-auto relative outline-none"
+      overlayClassName="fixed inset-0 bg-black/50 flex items-start justify-center z-20">
       <div className="flex justify-between">
-        <h2 className="text-xl font-bold mb-4">Тікет ID: {task.id}</h2>
+        <div className="flex gap-5">
+        <h2 className="text-xl mb-4">{projectTaskId}</h2> |
+        <span className='flex gap-2'><Megaphone /> {task.reporter_name}</span> |
+        <p><span className="px-2 bg-violet-500/50 rounded-full">{task.type_name}</span></p>
+        </div>
         <button onClick={onRequestClose} className="text-gray-500 hover:text-black my-auto">
           <X className="w-5 h-5" />
         </button>
       </div>
 
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={{
+          hidden: { opacity: 0, y: '5%' },
+          visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 75, damping: 7 } },
+          exit: { opacity: 0, y: '25%' },
+        }}
+        transition={{ duration: 0.3 }}
+        className="relative z-50">
       <div className="flex justify-between gap-10">
         <div className="max-w-[45rem]">
           <div className="space-y-2">
             <h2 className='text-2xl mb-3'>{task.title}</h2>
-            <p className='bg-black/10 p-2 rounded-lg border-t-8 border-black/10 dark:bg-white/15 dark:border-white/20'>{task.description}</p>
-            <p>Deadline <span className="px-2 bg-black/10 rounded-full">{task.deadline}</span></p>
-            <p>Type <span className="px-2 bg-violet-500/50 rounded-full">{task.type_name}</span></p>
-            <p><span className="font-semibold">Репортер:</span> {task.reporter_name}</p>
-            <p><span className="font-semibold">Створено:</span> {task.created_at}</p>
-            <p><span className="font-semibold">Оновлено:</span> {task.updated_at}</p>
-          </div>
-
-          <div className="flex justify-start mt-6 space-x-3">
-            <button
-              onClick={onEdit}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
-              Змінити
-            </button>
-            <button
-              onClick={onDelete}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
-              Видалити
-            </button>
+            <p className='bg-black/10 p-2 text-lg rounded-lg border-t-8 border-black/10 dark:bg-white/15 dark:border-white/20'>{task.description}</p>
+            <div className="flex justify-between">
+                <div className="flex-col">
+                  <p>Created at <span className="dark:bg-white/15 bg-black/10 px-3 rounded-full text-black dark:text-white my-auto">{task.created_at}</span></p>
+                  <p>Deadline <span className="dark:bg-white/15 bg-black/10 px-3 rounded-full text-black dark:text-white my-auto">{task.deadline}</span></p>
+                </div>
+                <div className="flex gap-5 my-auto">
+                <Pen
+                    className="w-8 cursor-pointer transition-all hover:bg-violet-500/50 rounded-full h-8 px-1"
+                    onClick={() => openTicketModal(task)}
+                    />
+                <Trash
+                    className="w-8 cursor-pointer transition-all hover:bg-red-400 rounded-full h-8 p-1"
+                    />
+                </div>
+            </div>
           </div>
         </div>
 
@@ -211,7 +237,7 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
                           <div className="flex gap-1">
                             <Pen
                                 className="w-6 cursor-pointer transition-all hover:bg-violet-500/50 rounded-full px-1"
-                                onClick={() => handleEditComment(comment)}/>
+                                onClick={() => setEditingComment(comment)}/>
                             <Trash
                                 className="w-6 cursor-pointer transition-all hover:bg-red-400 rounded-full px-1"
                                 onClick={() => setCommentToDelete(comment)}/>
@@ -311,6 +337,14 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
           </div>
         </div>
       )}
+      {selectedTicket && (
+          <ChangeTicketModal
+              key={selectedTicket.id}
+              ticket={selectedTicket}
+              isOpen={Boolean(selectedTicket)}
+              onClose={() => setSelectedTicket(null)}/>
+      )}
+      </motion.div>
     </Modal>
   );
 }
