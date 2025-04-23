@@ -210,7 +210,7 @@ const TicketPage = () => {
 
       <div className="flex gap-5">
         <div className="">
-        <div className="flex flex-col w-72 border h-full max-h-[40rem] rounded-t-lg border-violet-500 border-t-8 overflow-auto relative">
+        <div className="flex flex-col w-72 border h-full max-h-[38rem] rounded-t-lg border-violet-500 border-t-8 overflow-auto relative">
           {tasks.map(task => (
             <div
               key={task.id}

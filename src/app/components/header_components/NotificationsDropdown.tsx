@@ -47,7 +47,7 @@ export default function NotificationsDropdown() {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative my-auto" ref={dropdownRef}>
       <button onClick={() => setIsOpen(!isOpen)} className="relative p-2 rounded-full hover:bg-white/25 transition-all">
         <Bell className="w-6 h-6 text-white" />
         {notifications.some(n => !n.read) && (

@@ -102,7 +102,7 @@ export default function ProjectSelector({ onSelect }: { onSelect: (id: string) =
     };
 
     return (
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative m-auto" ref={dropdownRef}>
             <div
                 className="header-button bg-transparent rounded-lg text-white px-4 py-2 cursor-pointer flex hover:bg-white/10"
                 onClick={() => setIsOpen(!isOpen)}>

@@ -69,11 +69,11 @@ export default function ShowMembers({ projectId }: ShowMembersProps) {
                   <p className="text-[1.5rem] mt-[1rem]">{user.username}</p>
                 </div>
                 <div className="bg-white/0 w-auto rounded-lg p-3">
-                  <p className="text-sm border-b-2 mb-2 pb-2 border-black/50 dark:border-white/75">Email <span>{user.email || "None"}</span></p>
-                  <p className="text-sm text-black/50 dark:text-white/75 flex"><Briefcase className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2"/> <span className='bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto'>{user.position || "None"} </span></p>
-                  <p className="text-sm text-black/50 dark:text-white/75 flex"><Users className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2"/> <span className='bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto'>{user.department || "None"}</span></p>
-                  <p className="text-sm text-black/50 dark:text-white/75 flex"><Building className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2"/> <span className='bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto'>{user.organization || "None"}</span></p>
-                  <p className="text-sm text-black/50 dark:text-white/75 flex"><MapPin className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2"/> <span className='bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto'>{user.location || "None"}</span></p>
+                  <p className="text-sm border-b-2 pb-2 border-black/50 dark:border-white/75 flex"><AtSign className='w-6 h-6 text-black/75 dark:text-white my-1 mr-2'/> <span className='my-auto'>{user.email || "None"}</span></p>
+                  <p className="text-sm text-black/50 dark:text-white/75 flex"><Briefcase className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2"/> <span className='px-1 rounded-full text-black dark:text-white my-auto'>{user.position || "None"} </span></p>
+                  <p className="text-sm text-black/50 dark:text-white/75 flex"><Users className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2"/> <span className='px-1 rounded-full text-black dark:text-white my-auto'>{user.department || "None"}</span></p>
+                  <p className="text-sm text-black/50 dark:text-white/75 flex"><Building className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2"/> <span className='px-1 rounded-full text-black dark:text-white my-auto'>{user.organization || "None"}</span></p>
+                  <p className="text-sm text-black/50 dark:text-white/75 flex"><MapPin className="w-6 h-6 text-black/75 dark:text-white my-1 mr-2"/> <span className=' px-1 rounded-full text-black dark:text-white my-auto'>{user.location || "None"}</span></p>
                 </div>
               </div>
               <div className="absolute top-5 right-2">

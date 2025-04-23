@@ -8,9 +8,10 @@ import { LoginRequired } from "@/app/lib/auth";
 import SelectionToast from "@/app/components/SelectionToast";
 import ChangeTicketModal from "@/app/components/ChangeTicket";
 import { toast } from "sonner";
-import { Bug, FileText, Megaphone, CalendarDays, Clock, Bell, Search, MoreHorizontal, Dock, Filter, CheckCircle, Hash } from "lucide-react";
+import { Bug, FileText, Megaphone, CalendarDays, Clock, Bell, Search, MoreHorizontal, Dock, Filter, CheckCircle, Hash, Plus } from "lucide-react";
 import '@/app/styles/globals.scss';
 import '@/app/styles/mixins.scss';
+import CreateTicketModal from "../components/CreateTicket";
 
 interface Task {
     id: number;
@@ -28,6 +29,10 @@ export default function ListPage() {
     const [selectedTickets, setSelectedTickets] = useState<number[]>([]);
     const [selectedTicket, setSelectedTicket] = useState<Task | null>(null);
     const projectId = Cookie.get('selectedProject');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -85,7 +90,7 @@ export default function ListPage() {
 
     return (
         <>
-            <div className="">
+            <div className="pb-10">
                 <title>List</title>
                 <LoginRequired/>
                 <h1 className="text-1xl mb-4">List</h1>
@@ -231,6 +236,14 @@ export default function ListPage() {
                         ))}
                         </tbody>
                     </table>
+                    <div className="mt-4">
+                    <button
+                        onClick={openModal}
+                        className="fixed bottom-6 right-6 z-50 p-4 bg-violet-500 text-white rounded-full shadow-lg hover:bg-violet-600 transition">
+                        <Plus size={24} />
+                    </button>
+                    </div>
+
                 </div>
 
                 <SelectionToast selectedCount={selectedTickets.length} onDelete={handleDeleteSelected}/>
@@ -242,6 +255,10 @@ export default function ListPage() {
                         isOpen={Boolean(selectedTicket)}
                         onClose={() => setSelectedTicket(null)}/>
                 )}
+                <CreateTicketModal isOpen={isModalOpen} onClose={closeModal}>
+                <div></div>
+                </CreateTicketModal>
+
             </div>
         </>
     );

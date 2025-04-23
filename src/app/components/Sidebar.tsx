@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, List, Columns3, CogIcon, CalendarClock, LucideChartNoAxesCombined, Speech, NotebookText } from 'lucide-react';
+import { Users, List, Columns3, CogIcon, CalendarClock, LucideChartNoAxesCombined, Speech, NotebookText, BotMessageSquare, Handshake, Pin } from 'lucide-react';
 import dynamic from "next/dynamic";
 import Lottie from 'lottie-react';
 import board from '../../lotties/board.json'
@@ -17,6 +17,7 @@ export default function Sidebar() {
     const menuItems = [
         { href: "/", label: "Statistics", icon: <LucideChartNoAxesCombined /> },
         { href: "/calendar", label: "Calendar", icon: <CalendarClock /> },
+        { href: "/", label: "Subscribes", icon: <Pin /> },
         { href: "/board", label: "Board", icon: <Columns3 /> },
         { href: "/list", label: "List", icon: <List /> },
         { href: "/tickets", label: "Tickets", icon: <NotebookText /> },
@@ -26,12 +27,13 @@ export default function Sidebar() {
     const menuItems2 = [
         { href: "/members", label: "Members", icon: <Users /> },
         { href: "/meetings", label: "Meetings", icon: <Speech /> },
+        { href: "/", label: "Teams", icon: <Handshake /> },
     ]
 
 
 return (
-    <div className="flex-col p-3 max-w-80 min-w-72 sidebar h-full overflow-auto bg-black/5 dark:bg-black/15">
-        <div className="ml-3 my-10">
+    <div className="flex-col p-3 max-w-80 min-w-72 sidebar h-full pb-24 overflow-auto bg-black/5 dark:bg-black/15">
+        <div className="ml-3 my-5">
             <CurrentProject/>
         </div>
         <div className="flex justify-start ml-3 mt-5">
