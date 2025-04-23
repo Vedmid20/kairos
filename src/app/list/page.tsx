@@ -176,42 +176,49 @@ export default function ListPage() {
                                     />
                                 </td>
                                 <td className="border px-4 py-2 w-10"><p
-                                    className=''><span className="bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto">{task.type_name}</span></p></td>
-                                <td className="border px-4 py-2"><span className="bg-black/10 dark:bg-white/10 px-3 rounded-full text-black dark:text-white my-auto">{task.project_task_id}</span></td>    
+                                    className=''><span
+                                    className="bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto">{task.type_name}</span>
+                                </p></td>
+                                <td className="border px-4 py-2"><span
+                                    className="">{task.project_task_id}</span>
+                                </td>
                                 <td className="border px-4 py-2">{task.title}</td>
                                 <td className="border px-4 py-2">{task.reporter_name}</td>
-                                <td className="border px-4 py-2">{task.status_name}</td>
+                                <td className="border px-4 py-2"><span
+                                    className="bg-black/10 dark:bg-white/10 px-3 rounded-full text-black dark:text-white my-auto">{task.status_name}</span>
+                                </td>
                                 <td className="border px-4 py-2 w-40 relative group">
                                     <input
                                         type="date"
                                         className='bg-white/25 p-1 rounded-md text-center border-none w-36 cursor-pointer'
                                         defaultValue={task.deadline}
                                         onChange={async (e) => {
-                                        const newDate = e.target.value;
-                                        try {
-                                            const token = localStorage.getItem("access_token");
-                                            await axios.patch(`http://127.0.0.1:8008/api/v1/tasks/${task.id}/`, {
-                                            deadline: newDate
-                                            }, {
-                                            headers: { Authorization: `Bearer ${token}` }
-                                            });
+                                            const newDate = e.target.value;
+                                            try {
+                                                const token = localStorage.getItem("access_token");
+                                                await axios.patch(`http://127.0.0.1:8008/api/v1/tasks/${task.id}/`, {
+                                                    deadline: newDate
+                                                }, {
+                                                    headers: {Authorization: `Bearer ${token}`}
+                                                });
 
-                                            setTasks(prevTasks =>
-                                            prevTasks.map(t => t.id === task.id ? { ...t, deadline: newDate } : t)
-                                            );
-                                            toast.success("Deadline updated!");
-                                        } catch (error) {
-                                            toast.error("Failed to update deadline");
-                                            console.error("Deadline update error:", error);
-                                        }
+                                                setTasks(prevTasks =>
+                                                    prevTasks.map(t => t.id === task.id ? {...t, deadline: newDate} : t)
+                                                );
+                                                toast.success("Deadline updated!");
+                                            } catch (error) {
+                                                toast.error("Failed to update deadline");
+                                                console.error("Deadline update error:", error);
+                                            }
                                         }}
                                     />
-                                    </td>
+                                </td>
 
                                 <td className="border px-4 py-2 w-40"><p
                                     className='bg-white/25 p-1 rounded-md text-center'>{task.created_at}</p></td>
                                 <td className="border px-4 py-2 text-center">
-                                    <input type="checkbox" className='w-5 h-5 text--500 border-violet-500 rounded-lg focus:ring-2 focus:ring-violet-500'/>
+                                    <input type="checkbox"
+                                           className='w-5 h-5 text--500 border-violet-500 rounded-lg focus:ring-2 focus:ring-violet-500'/>
                                 </td>
                                 <td className="border px-4 py-2 w-10">
                                     <button

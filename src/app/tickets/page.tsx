@@ -235,12 +235,15 @@ const TicketPage = () => {
         <div className="flex-1 max-h-[40rem] border rounded-lg p-5 shadow bg-white dark:bg-black/10 word-break h-full border-violet-500 border-t-8">
           {selectedTask ? (
             <>
-              <p className="mb-3 flex gap-2">
+              <p className="mb-3 flex gap-5">
                 <span className="bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto">
                   {selectedTask.type_name}
-                </span>
+                </span> |
                 <span className='bg-black/10 dark:bg-white/10 px-3 rounded-full text-black dark:text-white my-auto'>
                   {selectedTask.project_task_id}
+                </span> |
+                <span className='bg-black/10 dark:bg-white/10 px-3 rounded-full text-black dark:text-white my-auto'>
+                  {selectedTask.status_name}
                 </span>
               </p>
               <h2 className="text-2xl font-bold mb-1">{selectedTask.title}</h2>
@@ -256,29 +259,29 @@ const TicketPage = () => {
                   ? `${selectedTask.description.slice(0, 250)}...`
                   : selectedTask.description}
               </p>
-              <p>Status {selectedTask.status}</p>
-              <p className="text-sm">
-                Created at{" "}
-                <span className="dark:bg-white/15 bg-black/10 px-3 rounded-full text-black dark:text-white my-auto">
-                  {selectedTask.created_at}
-                </span>
-              </p>
-              <p className="text-sm">
-                Deadline{" "}
-                <span className="dark:bg-white/15 bg-black/10 px-3 rounded-full text-black dark:text-white my-auto">
-                  {selectedTask.deadline}
-                </span>
-              </p>
-
+              <div className="flex-col gap-5">
+                  <p className="text-sm mb-2">
+                    Created at{" "}
+                    <span className="dark:bg-white/15 bg-black/10 px-3 rounded-full text-black dark:text-white my-auto">
+                    {selectedTask.created_at}
+                  </span>
+                  </p>
+                  <p className="text-sm">
+                    Deadline{" "}
+                    <span className="dark:bg-white/15 bg-black/10 px-3 rounded-full text-black dark:text-white my-auto">
+                    {selectedTask.deadline}
+                  </span>
+                  </p>
+              </div>
               <div className="mt-6">
                 <textarea
-                  className="w-full p-2 border rounded mb-2 !transform-none min-h-20 max-h-64"
-                  placeholder="Write a comment..."
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}/>
+                    className="w-full p-2 border rounded mb-2 !transform-none min-h-20 max-h-64"
+                    placeholder="Write a comment..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}/>
                 <button
-                  onClick={handleCommentSubmit}
-                  className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700">
+                    onClick={handleCommentSubmit}
+                    className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700">
                   Send
                 </button>
               </div>

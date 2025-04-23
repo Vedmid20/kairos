@@ -48,6 +48,7 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
   const [newCommentText, setNewCommentText] = useState("");
   const [commentToDelete, setCommentToDelete] = useState<Comment | null>(null);
   const [projectTaskId, setProjectTaskId] = useState('');
+  const [statusName, setStatusName] = useState('')
   const [selectedTicket, setSelectedTicket] = useState<Task | null>(null);
 
   useEffect(() => {
@@ -61,7 +62,9 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
     if (task?.id && isOpen) {
       console.log("task", task);
       axios.get(`http://127.0.0.1:8008/api/v1/tasks/${task.id}`)
-        .then(res => setProjectTaskId(res.data.project_task_id))
+        .then(res => setProjectTaskId(res.data.project_task_id), res => setStatusName(res.data.status_name))
+      axios.get(`http://127.0.0.1:8008/api/v1/tasks/${task.id}`)
+        .then(res => setStatusName(res.data.status_name))
       axios.get(`http://127.0.0.1:8008/api/v1/comments/?task_id=${task.id}`)
         .then(res => setComments(res.data))
         .catch(err => console.error('Error fetching comments', err));
@@ -172,7 +175,8 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
         <div className="flex gap-5">
         <h2 className="text-xl mb-4">{projectTaskId}</h2> |
         <span className='flex gap-2'><Megaphone /> {task.reporter_name}</span> |
-        <p><span className="px-2 bg-violet-500/50 rounded-full">{task.type_name}</span></p>
+        <p><span className="px-2 bg-violet-500/50 rounded-full">{task.type_name}</span></p> |
+        <p><span className="bg-black/10 dark:bg-white/10 px-3 rounded-full text-black dark:text-white my-auto">{statusName}</span></p>
         </div>
         <button onClick={onRequestClose} className="text-gray-500 hover:text-black my-auto">
           <X className="w-5 h-5" />
