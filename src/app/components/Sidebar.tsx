@@ -27,7 +27,7 @@ export default function Sidebar() {
     const menuItems2 = [
         { href: "/members", label: "Members", icon: <Users /> },
         { href: "/meetings", label: "Meetings", icon: <Speech /> },
-        { href: "/", label: "Teams", icon: <Handshake /> },
+        { href: "/teams", label: "Teams", icon: <Handshake /> },
     ]
 
 

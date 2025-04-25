@@ -197,12 +197,12 @@ const TaskBoard = () => {
                               <div className="flex flex-col text-sm">
                                 <button
                                   onClick={() => handleEditStatus(status)}
-                                  className="px-4 py-2 hover:bg-black/10 dark:hover:bg-white/15 text-left rounded">
+                                  className="px-4 py-2 bg-white hover:bg-gray-100 dark:bg-grey dark:hover:bg-violet-500 transition-all text-left rounded">
                                   Change
                                 </button>
                                 <button
                                   onClick={() => handleDeleteStatus(status)}
-                                  className="px-4 py-2 text-red-600 hover:bg-red-400/20 text-left rounded">
+                                  className="px-4 py-2 text-red-600 bg-white dark:bg-grey hover:bg-red-100 dark:hover:bg-red-900 transition-all text-left rounded">
                                   Delete
                                 </button>
                               </div>
@@ -322,7 +322,7 @@ const TaskBoard = () => {
       <Dialog open={createModalOpen} onClose={() => setCreateModalOpen(false)} className="relative z-50">
         <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="bg-white dark:bg-gray-900 p-6 rounded max-w-sm w-full">
+          <Dialog.Panel className="bg-white dark:bg-grey p-6 rounded max-w-sm w-full">
             <Dialog.Title className="text-lg font-semibold">Create new status</Dialog.Title>
             <motion.div
                 initial="hidden"
@@ -338,7 +338,7 @@ const TaskBoard = () => {
             <input
               value={newStatusName}
               onChange={(e) => setNewStatusName(e.target.value)}
-              className="w-full mt-3 p-2 border rounded bg-white dark:bg-gray-800"
+              className="w-full mt-3 p-2 border rounded"
               placeholder="Name of new status"
             />
             <div className="flex justify-start gap-2 mt-4">

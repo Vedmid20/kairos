@@ -12,6 +12,7 @@ import { Bug, FileText, Megaphone, CalendarDays, Clock, Bell, Search, MoreHorizo
 import '@/app/styles/globals.scss';
 import '@/app/styles/mixins.scss';
 import CreateTicketModal from "../components/CreateTicket";
+import TaskModal from "@/app/components/ShowTicket";
 
 interface Task {
     id: number;
@@ -27,11 +28,14 @@ export default function ListPage() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedTickets, setSelectedTickets] = useState<number[]>([]);
-    const [selectedTicket, setSelectedTicket] = useState<Task | null>(null);
+    const [selectedTicketToChange, setSelectedTicketToChange] = useState<Task | null>(null);
     const projectId = Cookie.get('selectedProject');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+    const [selectedTicket, setSelectedTicket] = useState<Task | null>(null);
+    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+
 
 
     useEffect(() => {
@@ -81,11 +85,11 @@ export default function ListPage() {
     };
 
     const openTicketModal = (task: Task) => {
-        setSelectedTicket(task);
+        setSelectedTicketToChange(task);
     };
 
     const closeTicketModal = () => {
-        setSelectedTicket(null);
+        setSelectedTicketToChange(null);
     };
 
     return (
@@ -184,9 +188,13 @@ export default function ListPage() {
                                     className=''><span
                                     className="bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto">{task.type_name}</span>
                                 </p></td>
-                                <td className="border px-4 py-2"><span
-                                    className="">{task.project_task_id}</span>
-                                </td>
+                                <td className="border px-4 py-2 cursor-pointer hover:bg-black/10 transition"
+                                    onClick={() => {
+                                        setSelectedTicket(task);
+                                        setIsTaskModalOpen(true);
+                                    }}>
+                                    <span>{task.project_task_id}</span>
+                                    </td>
                                 <td className="border px-4 py-2">{task.title}</td>
                                 <td className="border px-4 py-2">{task.reporter_name}</td>
                                 <td className="border px-4 py-2"><span
@@ -248,17 +256,25 @@ export default function ListPage() {
 
                 <SelectionToast selectedCount={selectedTickets.length} onDelete={handleDeleteSelected}/>
 
-                {selectedTicket && (
+                {selectedTicketToChange && (
                     <ChangeTicketModal
-                        key={selectedTicket.id}
-                        ticket={selectedTicket}
-                        isOpen={Boolean(selectedTicket)}
-                        onClose={() => setSelectedTicket(null)}/>
+                        key={selectedTicketToChange.id}
+                        ticket={selectedTicketToChange}
+                        isOpen={Boolean(selectedTicketToChange)}
+                        onClose={() => setSelectedTicketToChange(null)}/>
                 )}
                 <CreateTicketModal isOpen={isModalOpen} onClose={closeModal}>
                 <div></div>
                 </CreateTicketModal>
-
+                
+                {isTaskModalOpen && selectedTicket && (
+                    <TaskModal
+                        isOpen={isTaskModalOpen}
+                        onRequestClose={() => setIsTaskModalOpen(false)}
+                        task={selectedTicket}
+                        onEdit={() => console.log('Редагувати', selectedTicket.id)}
+                        onDelete={() => console.log('Видалити', selectedTicket.id)}/>
+                )}
             </div>
         </>
     );

@@ -11,7 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const hiddenRoutes = ["/log-in", "/sign-up", "/optional-info", "/create-project", "/loading", "/not-found", "projects"];
+  const hiddenRoutes = ["/log-in", "/sign-up", "/optional-info", "/create-project", "/loading", "/not-found", "/privacy-policy", ];
   const isAuthPage = hiddenRoutes.includes(pathname);
 
   return (
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {!isAuthPage && <Sidebar />}
           <SessionProvider>
             <ThemeProvider>
-              <main className={`flex-1 overflow-auto p-5 ${isAuthPage ? "w-full max-w-md" : "ml-80"}`}>
+              <main className={`flex-1 overflow-auto p-5 ${isAuthPage ? "w-screen" : "ml-80"}`}>
                 {children}
                 <Toaster />
               </main>

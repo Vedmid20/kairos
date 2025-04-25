@@ -1,7 +1,8 @@
 'use client';
 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CreateZoomButton({ name }: { name: string }) {
   const [meetingUrl, setMeetingUrl] = useState("");
@@ -18,6 +19,13 @@ export default function CreateZoomButton({ name }: { name: string }) {
     }
   };
 
+  useEffect(() => {
+    if (meetingUrl) {
+      window.open(meetingUrl, '_blank');
+      setMeetingUrl("");
+    }
+  }, [meetingUrl])
+
   return (
     <div>
       <h1>Meetings</h1>
@@ -25,13 +33,6 @@ export default function CreateZoomButton({ name }: { name: string }) {
       <button onClick={handleCreateMeeting} className="bg-blue-600 text-white px-4 py-2 rounded">
         Create Zoom Meeting
       </button>
-      {meetingUrl && (
-        <p className="mt-2">
-          <a href={meetingUrl} target="_blank" className="text-blue-500 underline">
-            Go to discussion
-          </a>
-        </p>
-      )}
     </div>
   );
 }

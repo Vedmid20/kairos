@@ -11,6 +11,7 @@ import '../styles/globals.scss'
 import '../styles/mixins.scss'
 import NotificationsDropdown from "@/app/components/header_components/NotificationsDropdown";
 import { LayoutGrid } from "lucide-react";
+import DropDownMenu from "./Menu";
 
 export default function Header() {
     const pathname = usePathname();
@@ -28,7 +29,21 @@ export default function Header() {
         <div className="header">
             <div className="flex justify-between">
                 <div className="flex gap-2 ml-5">
-                    <LayoutGrid className="text-violet-300 hover:text-violet-500 transition-all w-8 h-8 my-auto cursor-pointer" strokeWidth={1}/>
+                <DropDownMenu
+                    trigger={
+                        <LayoutGrid
+                        className="text-violet-300 hover:text-violet-500 transition-all w-8 h-8 my-auto mt-2 cursor-pointer"
+                        strokeWidth={1}
+                        />
+                    }
+                    items={[
+                        { label: 'Home', href: '/' },
+                        { label: 'Privacy policy', href: '/privacy-policy' },
+                        { label: 'Terms of service', href: '/terms-of-service' },
+                        { label: 'Roadmap', href: '/terms-of-service' },
+                        { label: 'About us', href: '/terms-of-service' },
+                    ]}
+                    />
                     <img src="/head_logo.png" alt="dsa" className="w-[6rem] bg-red"/>
                 </div>
                 <div className="flex justify-end">

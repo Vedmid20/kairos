@@ -117,7 +117,7 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Edit Ticket Modal"
-      className="relative z-50 max-w-lg w-full p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
+      className="relative z-50 w-[40rem] p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
       closeTimeoutMS={200}>
 
@@ -129,7 +129,7 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
           <X />
         </button>
       </div>
-      <hr className='mt-5' />
+      <hr className='mt-5 -mb-10' />
 
       <motion.div
         initial="hidden"
@@ -143,10 +143,11 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
         transition={{ duration: 0.3 }}
         className="relative z-50">
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className='overflow-auto h-[35rem]'>
+
           <div className="form-group">
             <label htmlFor="title" className='flex'>Title<p className='text-red-400'>*</p></label>
-            <input id='title' type="text" {...register('title')} placeholder='Enter title' />
+            <input id='title' type="text" {...register('title')} placeholder='Enter title' className='w-96'/>
             {errors.title && <p className="error">{errors.title.message}</p>}
           </div>
 
@@ -168,7 +169,7 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
 
           <div className="form-group">
             <label htmlFor="description" className='flex'>Description<p className='text-red-400'>*</p></label>
-            <textarea id='description' {...register('description')} placeholder='Enter description' className="!transform-none resize-none h-52 text-[.8rem] w-96" />
+            <textarea id='description' {...register('description')} placeholder='Enter description' className="!transform-none min-h-36 max-h-96 w-[35rem]" />
             {errors.description && <p className="error">{errors.description.message}</p>}
           </div>
 
