@@ -117,7 +117,7 @@ export default function ChangeTicketModal({ isOpen, onClose, ticket }) {
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Edit Ticket Modal"
-      className="relative z-50 w-[40rem] p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
+      className="relative z-50 w-[41rem] p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
       closeTimeoutMS={200}>
 

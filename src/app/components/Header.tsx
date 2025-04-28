@@ -33,8 +33,7 @@ export default function Header() {
                     trigger={
                         <LayoutGrid
                         className="text-violet-300 hover:text-violet-500 transition-all w-8 h-8 my-auto mt-2 cursor-pointer"
-                        strokeWidth={1}
-                        />
+                        strokeWidth={1}/>
                     }
                     items={[
                         { label: 'Home', href: '/' },
@@ -42,8 +41,7 @@ export default function Header() {
                         { label: 'Terms of service', href: '/terms-of-service' },
                         { label: 'Roadmap', href: '/terms-of-service' },
                         { label: 'About us', href: '/terms-of-service' },
-                    ]}
-                    />
+                    ]}/>
                     <img src="/head_logo.png" alt="dsa" className="w-[6rem] bg-red"/>
                 </div>
                 <div className="flex justify-end">

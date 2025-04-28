@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { motion } from 'framer-motion';
+import Cookie from 'js-cookie';
 
 interface SubscribeModalProps {
   isOpen: boolean;
@@ -13,16 +14,23 @@ interface SubscribeModalProps {
   taskId: number;
 }
 
-Modal.setAppElement('#__next');
+if (typeof window !== 'undefined') {
+  Modal.setAppElement('#__next');
+}
 
 export default function SubscribeModal({ isOpen, onRequestClose, taskId }: SubscribeModalProps) {
   const [userId, setUserId] = useState<string | null>(null);
   const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+  const projectId = Cookie.get('selectedProject');
 
   useEffect(() => {
     if (token) {
-      const decoded: any = jwtDecode(token);
-      setUserId(decoded.user_id);
+      try {
+        const decoded: any = jwtDecode(token);
+        setUserId(decoded.user_id);
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
     }
   }, [token]);
 
@@ -31,12 +39,11 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
     try {
       await axios.post(
         'http://127.0.0.1:8008/api/v1/task-subscribers/',
-        { user: userId, task: taskId, type },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { user_subscriber: userId, task: taskId },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       onRequestClose();
+      window.location.reload();
     } catch (error) {
       console.error('Subscribe error', error);
     }
@@ -44,57 +51,80 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
 
   const handleUnsubscribe = async () => {
     if (!userId || !taskId) return;
+    
     try {
-      await axios.delete(
-        `http://127.0.0.1:8008/api/v1/task-subscribers/?user=${userId}&task=${taskId}`,
+      const response = await axios.get(
+        `http://127.0.0.1:8008/api/v1/task-subscribers/?task=${taskId}&user=${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      onRequestClose();
+  
+      const subscriptions = response.data;
+      if (subscriptions.length > 0) {
+        await axios.delete(
+          `http://127.0.0.1:8008/api/v1/task-subscribers/?task=${taskId}&user=${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log('Unsubscribed successfully');
+        onRequestClose();
+        window.location.reload();
+      } else {
+        console.log('No subscription found for this user');
+      }
     } catch (error) {
       console.error('Unsubscribe error', error);
     }
-  };
+  };  
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="bg-white dark:bg-grey rounded-2xl shadow-xl w-[30rem] p-6 mx-auto m-auto relative outline-none"
-      overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center z-20"
+      contentLabel="Subscribe Modal"
+      className="relative z-50 w-[30rem] p-6 bg-white dark:bg-grey rounded-lg shadow-lg outline-none"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-15 flex justify-center items-center"
+      closeTimeoutMS={200}
     >
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Subscribe</h2>
-        <X className="cursor-pointer" onClick={onRequestClose} />
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-semibold">Subscribe {taskId}s{userId}</h2>
+        <button onClick={onRequestClose} className="text-lg font-semibold">
+          <X />
+        </button>
       </div>
+      <hr className="mt-5 -mb-10" />
 
       <motion.div
-        initial={{ opacity: 0, y: '5%' }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: '25%' }}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={{
+          hidden: { opacity: 0, y: '5%' },
+          visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 75, damping: 7 } },
+          exit: { opacity: 0, y: '25%' },
+        }}
         transition={{ duration: 0.3 }}
+        className="relative z-50 mt-10 flex flex-col gap-5"
       >
-        <div className="flex flex-col gap-4">
-          <button
-            onClick={() => handleSubscribe('solo')}
-            className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700"
-          >
-            Solo Subscribe
-          </button>
-          <button
-            onClick={() => handleSubscribe('team')}
-            className="bg-violet-500 text-white px-4 py-2 rounded hover:bg-violet-600"
-          >
-            Team Subscribe
-          </button>
-          <button
-            onClick={handleUnsubscribe}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          >
-            Unsubscribe
-          </button>
-        </div>
+        <button
+          onClick={() => handleSubscribe('solo')}
+          className="form-button bg-violet-600 hover:bg-violet-700 text-white"
+        >
+          Solo Subscribe
+        </button>
+        <button
+          onClick={() => handleSubscribe('team')}
+          className="form-button bg-violet-500 hover:bg-violet-600 text-white">
+          Team Subscribe
+        </button>
+        <button
+          onClick={() => handleUnsubscribe()}
+          className="form-button bg-red-500 hover:bg-red-600 text-white"
+        >
+          Unsubscribe
+        </button>
       </motion.div>
     </Modal>
   );

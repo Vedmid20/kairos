@@ -14,6 +14,7 @@ import '@/app/styles/mixins.scss';
 import CreateTicketModal from "../components/CreateTicket";
 import TaskModal from "@/app/components/ShowTicket";
 import { Popover } from '@headlessui/react';
+import SubscribeModal from "../components/SubscribeModal";
 
 interface Task {
     id: number;
@@ -37,6 +38,17 @@ export default function ListPage() {
     const [selectedTicket, setSelectedTicket] = useState<Task | null>(null);
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [openPopoverId, setOpenPopoverId] = useState<number | null>(null);
+    const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
+
+    const openSubscribeModal = (taskId: number) => {
+        setSelectedTicket(taskId);
+        setIsSubscribeModalOpen(true);
+    };
+    
+      const closeSubscribeModal = () => {
+        setIsSubscribeModalOpen(false);
+        setSelectedTicket(null);
+      };
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -97,7 +109,7 @@ export default function ListPage() {
             <div className="pb-10">
                 <title>List</title>
                 <LoginRequired/>
-                <h1 className="text-1xl mb-4">List</h1>
+                <h1 className="mb-4">List</h1>
                 <div className="flex justify-between">
                     <div className="relative">
                         <input
@@ -187,7 +199,7 @@ export default function ListPage() {
                                     className=''><span
                                     className="bg-violet-500/50 px-3 rounded-full text-black dark:text-white my-auto">{task.type_name}</span>
                                 </p></td>
-                                <td className="border px-4 py-2 cursor-pointer hover:bg-black/10 transition"
+                                <td className="border px-4 py-2 cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition"
                                     onClick={() => {
                                         setSelectedTicket(task);
                                         setIsTaskModalOpen(true);
@@ -229,30 +241,23 @@ export default function ListPage() {
                                 <td className="border px-4 py-2 w-40"><p
                                     className='bg-white/25 p-1 rounded-md text-center'>{task.created_at}</p></td>
                                 <td className="border px-4 py-2 text-center">
-                                    <Popover className="relative">
-                                      <Popover.Button className="p-3 text-black dark:text-white rounded-lg h-10 items-center text-center flex m-auto hover:bg-black/10 dark:hover:bg-white/10 transition">
+                                    <button
+                                        onClick={() => {
+                                            openSubscribeModal(task.id);
+                                            close();
+                                        }}
+                                        className="p-2 text-black dark:text-white rounded-full h-9 w-9 items-center text-center flex m-auto hover:bg-black/10 dark:hover:bg-white/10 transition">
                                         <MoreHorizontal />
-                                      </Popover.Button>
-                                      <Popover.Panel className="absolute z-10 right-0 mt-2 w-36 border border-violet-500 rounded shadow-md bg-white dark:bg-gray-800">
-                                        <div className="flex flex-col text-sm">
-                                          <button
-                                            onClick={() => console.log('Subscribe')}
-                                            className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-violet-500 transition-all text-left rounded">
-                                            Subscribe
-                                          </button>
-                                          <button
-                                            onClick={() => console.log('Unsubscribe')}
-                                            className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-violet-500 transition-all text-left rounded">
-                                            Unsubscribe
-                                          </button>
-                                        </div>
-                                      </Popover.Panel>
-                                    </Popover>
-
-                                </td>
+                                        </button>
+                                    {selectedTicket !== null && (
+                                        <SubscribeModal
+                                        isOpen={isSubscribeModalOpen}
+                                        onRequestClose={closeSubscribeModal}
+                                        taskId={selectedTicket}/>)}
+                                    </td>
                                 <td className="border px-4 py-2 w-10">
                                     <button
-                                        className='p-3 text-black dark:text-white rounded-lg h-10 w-10 items-center text-center flex m-auto'
+                                        className='p-2 text-black dark:text-white rounded-full h-9 w-9 items-center text-center flex m-auto hover:bg-black/10 dark:hover:bg-white/10 transition'
                                         onClick={() => openTicketModal(task)}>
                                         <Pen/>
                                     </button>
