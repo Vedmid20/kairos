@@ -60,7 +60,7 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
 
   useEffect(() => {
     if (task?.id && isOpen) {
-      console.log("task", task);
+      document.body.style.overflow = 'hidden';
       axios.get(`http://127.0.0.1:8008/api/v1/tasks/${task.id}`)
         .then(res => setProjectTaskId(res.data.project_task_id), res => setStatusName(res.data.status_name))
       axios.get(`http://127.0.0.1:8008/api/v1/tasks/${task.id}`)
@@ -68,9 +68,12 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
       axios.get(`http://127.0.0.1:8008/api/v1/comments/?task_id=${task.id}`)
         .then(res => setComments(res.data))
         .catch(err => console.error('Error fetching comments', err));
+    } else{
+      document.body.style.overflow = 'auto';
     }
-
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
   }, [task?.id, isOpen]);
 
   const handleCommentSubmit = async () => {

@@ -8,11 +8,12 @@ import { LoginRequired } from "@/app/lib/auth";
 import SelectionToast from "@/app/components/SelectionToast";
 import ChangeTicketModal from "@/app/components/ChangeTicket";
 import { toast } from "sonner";
-import { Bug, FileText, Megaphone, CalendarDays, Clock, Bell, Search, MoreHorizontal, Dock, Filter, CheckCircle, Hash, Plus } from "lucide-react";
+import { Bug, FileText, Megaphone, CalendarDays, Clock, Bell, Search, MoreHorizontal, Dock, Filter, CheckCircle, Hash, Plus, Pen } from "lucide-react";
 import '@/app/styles/globals.scss';
 import '@/app/styles/mixins.scss';
 import CreateTicketModal from "../components/CreateTicket";
 import TaskModal from "@/app/components/ShowTicket";
+import { Popover } from '@headlessui/react';
 
 interface Task {
     id: number;
@@ -35,8 +36,7 @@ export default function ListPage() {
     const closeModal = () => setIsModalOpen(false);
     const [selectedTicket, setSelectedTicket] = useState<Task | null>(null);
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-
-
+    const [openPopoverId, setOpenPopoverId] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -113,7 +113,6 @@ export default function ListPage() {
                             className="w-5 h-5 text-gray-400 m-auto"/></p>
                     </div>
                 </div>
-
 
                 <div className="overflow-x-auto rounded-lg border-t-8 border border-violet-500">
                     <table className="min-w-full ">
@@ -230,14 +229,32 @@ export default function ListPage() {
                                 <td className="border px-4 py-2 w-40"><p
                                     className='bg-white/25 p-1 rounded-md text-center'>{task.created_at}</p></td>
                                 <td className="border px-4 py-2 text-center">
-                                    <input type="checkbox"
-                                           className='w-5 h-5 text--500 border-violet-500 rounded-lg focus:ring-2 focus:ring-violet-500'/>
+                                    <Popover className="relative">
+                                      <Popover.Button className="p-3 text-black dark:text-white rounded-lg h-10 items-center text-center flex m-auto hover:bg-black/10 dark:hover:bg-white/10 transition">
+                                        <MoreHorizontal />
+                                      </Popover.Button>
+                                      <Popover.Panel className="absolute z-10 right-0 mt-2 w-36 border border-violet-500 rounded shadow-md bg-white dark:bg-gray-800">
+                                        <div className="flex flex-col text-sm">
+                                          <button
+                                            onClick={() => console.log('Subscribe')}
+                                            className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-violet-500 transition-all text-left rounded">
+                                            Subscribe
+                                          </button>
+                                          <button
+                                            onClick={() => console.log('Unsubscribe')}
+                                            className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-violet-500 transition-all text-left rounded">
+                                            Unsubscribe
+                                          </button>
+                                        </div>
+                                      </Popover.Panel>
+                                    </Popover>
+
                                 </td>
                                 <td className="border px-4 py-2 w-10">
                                     <button
-                                        className='p-3 text-black dark:text-white rounded-lg h-10 items-center text-center flex m-auto'
+                                        className='p-3 text-black dark:text-white rounded-lg h-10 w-10 items-center text-center flex m-auto'
                                         onClick={() => openTicketModal(task)}>
-                                        <MoreHorizontal/>
+                                        <Pen/>
                                     </button>
                                 </td>
                             </tr>
@@ -245,9 +262,9 @@ export default function ListPage() {
                         </tbody>
                     </table>
                     <div className="mt-4">
-                    <button
-                        onClick={openModal}
-                        className="fixed bottom-6 right-6 z-50 p-4 bg-violet-500 text-white rounded-full shadow-lg hover:bg-violet-600 transition">
+                        <button
+                            onClick={openModal}
+                            className="fixed bottom-6 right-6 z-50 p-4 bg-violet-500 text-white rounded-full shadow-lg hover:bg-violet-600 transition">
                         <Plus size={24} />
                     </button>
                     </div>

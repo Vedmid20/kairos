@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import "./styles/globals.scss";
+import "@/app/styles/globals.scss";
 import { SessionProvider } from "next-auth/react";
 import Sidebar from "@/app/components/Sidebar";
 import Header from "@/app/components/Header";

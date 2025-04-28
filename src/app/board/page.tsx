@@ -13,6 +13,7 @@ import { MoreHorizontal, Check, Plus } from 'lucide-react';
 import { Popover, Dialog } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import CreateTicketModal from '../components/CreateTicket';
+import "@/app/styles/globals.scss";
 
 const TaskBoard = () => {
   const [statuses, setStatuses] = useState([]);
