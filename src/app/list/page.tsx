@@ -115,7 +115,7 @@ export default function ListPage() {
                         <input
                             type="search"
                             className="mb-4 pl-10 pr-4 py-2 border rounded-lg"
-                            placeholder="Search ticket"/>
+                            placeholder="Search tickets"/>
                         <div className="absolute inset-y-1 left-0 pl-3 -top-3 flex items-center pointer-events-none">
                             <Search className="w-5 h-5 text-gray-400"/>
                         </div>
@@ -239,7 +239,7 @@ export default function ListPage() {
                                 </td>
 
                                 <td className="border px-4 py-2 w-40"><p
-                                    className='bg-white/25 p-1 rounded-md text-center'>{task.created_at}</p></td>
+                                    className='bg-white/25 p-1 rounded-md text-center'>{new Date(task.created_at).toLocaleDateString()}</p></td>
                                 <td className="border px-4 py-2 text-center">
                                     <button
                                         onClick={() => {

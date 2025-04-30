@@ -26,7 +26,7 @@ export default function MembersPage() {
                     <input
                         type="search"
                         className="mb-4 pl-10 pr-4 py-2 border rounded-lg"
-                        placeholder="Search member"
+                        placeholder="Search members"
                     />
                     <div className="absolute inset-y-1 left-0 pl-3 -top-3 flex items-center pointer-events-none">
                         <Search className="w-5 h-5 text-gray-400" />

@@ -43,7 +43,6 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
         { headers: { Authorization: `Bearer ${token}` } }
       );
       onRequestClose();
-      window.location.reload();
     } catch (error) {
       console.error('Subscribe error', error);
     }
@@ -70,7 +69,6 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
         );
         console.log('Unsubscribed successfully');
         onRequestClose();
-        window.location.reload();
       } else {
         console.log('No subscription found for this user');
       }
@@ -89,7 +87,7 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
       closeTimeoutMS={200}
     >
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Subscribe {taskId}s{userId}</h2>
+        <h2 className="text-xl font-semibold">Subscribe</h2>
         <button onClick={onRequestClose} className="text-lg font-semibold">
           <X />
         </button>

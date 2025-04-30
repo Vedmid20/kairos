@@ -9,7 +9,7 @@ import {
   DropResult,
 } from '@hello-pangea/dnd';
 import Cookie from 'js-cookie';
-import { MoreHorizontal, Check, Plus } from 'lucide-react';
+import { MoreHorizontal, Check, Plus, Search } from 'lucide-react';
 import { Popover, Dialog } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import CreateTicketModal from '../components/CreateTicket';
@@ -163,19 +163,28 @@ const TaskBoard = () => {
     <>
       <div>
         <title>Board</title>
-        <h1>Board</h1>
+        <h1 className='mb-4'>Board</h1>
 
-        <div className="flex justify-end px-4">
+        <div className="flex justify-between">
+          <div className="relative">
+              <input
+                  type="search"
+                  className="mb-4 pl-10 pr-4 py-2 border rounded-lg"
+                  placeholder="Search tickets"/>
+              <div className="absolute inset-y-1 left-0 pl-3 -top-3 flex items-center pointer-events-none">
+                  <Search className="w-5 h-5 text-gray-400"/>
+              </div>
+          </div>
           <button
             onClick={() => setCreateModalOpen(true)}
-            className="header-button px-2 rounded-lg hover:bg-white/10 py-2">
+            className="header-button px-2 rounded-lg hover:bg-white/10 h-10 my-auto">
             New Status
           </button>
-        </div>
+      </div>
 
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="overflow-x-auto">
-            <div className="flex gap-4 p-4 min-w-[1000px]">
+            <div className="flex gap-4 min-w-[1000px]">
               {statuses.map((status) => (
                 <Droppable droppableId={status.id.toString()} key={status.id}>
                   {(provided) => (
@@ -275,7 +284,7 @@ const TaskBoard = () => {
             <input
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
-              className="w-full mt-3 p-2 border rounded bg-white dark:bg-gray-800"
+              className="w-full mt-3 p-2 border rounded bg-white dark:bg-grey"
               placeholder="Name of status"/>
             <div className="flex justify-start gap-2 mt-4">
               <button onClick={confirmEditStatus} className="px-3 py-1 rounded bg-violet-500 text-white hover:bg-violet-600 transition-all">

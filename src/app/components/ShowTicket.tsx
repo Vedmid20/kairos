@@ -181,8 +181,10 @@ export default function TaskModal({ isOpen, onRequestClose, task, onEdit, onDele
         <p><span className="px-2 bg-violet-500/50 rounded-full">{task.type_name}</span></p> |
         <p><span className="bg-black/10 dark:bg-white/10 px-3 rounded-full text-black dark:text-white my-auto">{statusName}</span></p>
         </div>
-        <button onClick={onRequestClose} className="text-gray-500 hover:text-black my-auto">
-          <X className="w-5 h-5" />
+        <button
+          onClick={onRequestClose}
+          className="absolute right-10 text-lg font-semibold">
+          <X />
         </button>
       </div>
 
