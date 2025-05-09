@@ -15,19 +15,18 @@ export default function Sidebar() {
     if (hiddenRoutes.includes(pathname)) return null;
 
     const menuItems = [
-        { href: "/", label: "Statistics", icon: <LucideChartNoAxesCombined /> },
+        { href: "/statistics", label: "Statistics", icon: <LucideChartNoAxesCombined /> },
         { href: "/calendar", label: "Calendar", icon: <CalendarClock /> },
         { href: "/subscribes", label: "Subscribes", icon: <Pin /> },
         { href: "/board", label: "Board", icon: <Columns3 /> },
         { href: "/list", label: "List", icon: <List /> },
         { href: "/tickets", label: "Tickets", icon: <NotebookText /> },
-        { href: "/", label: "Project settings", icon: <CogIcon /> },
+        { href: "/project-settings", label: "Project settings", icon: <CogIcon /> },
     ];
 
     const menuItems2 = [
         { href: "/members", label: "Members", icon: <Users /> },
         { href: "/meetings", label: "Meetings", icon: <Speech /> },
-        { href: "/teams", label: "Teams", icon: <Handshake /> },
     ]
 
 
@@ -44,7 +43,7 @@ return (
                 <li key={`${href}-${index}`} className="rounded-md">
                     <Link href={href}
                           className={`flex gap-2 ml-5 mt-2 px-4 py-2 rounded-md transition ${
-                              pathname === href ? "bg-black/20 text-white" : "hover:bg-black/10"
+                              pathname === href ? "bg-black/30 dark:bg-white/20 text-white" : "hover:bg-black/10 dark:hover:bg-white/10"
                           }`}>
                         {icon}
                         {label}
@@ -60,7 +59,7 @@ return (
                 <li key={`${href}-${index}`} className="rounded-md">
                     <Link href={href}
                           className={`flex gap-2 ml-5 mt-2 px-4 py-2 rounded-md transition ${
-                              pathname === href ? "bg-black/20 text-white" : "hover:bg-black/10"
+                              pathname === href ? "bg-black/30 dark:bg-white/20 text-white" : "hover:bg-black/10 dark:hover:bg-white/10"
                           }`}>
                         {icon}
                         {label}

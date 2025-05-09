@@ -18,7 +18,7 @@ interface TaskSubscriber {
 }
 
 
-const SubscribesPage = ({ taskId }) => {
+const SubscribesPage = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [subscriptions, setSubscriptions] = useState<TaskSubscriber[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,7 +47,7 @@ const SubscribesPage = ({ taskId }) => {
     };
 
     fetchSubscriptions();
-  }, []);
+  }, [userId, token]);
 
   useEffect(() => {
     if (token) {
@@ -61,32 +61,32 @@ const SubscribesPage = ({ taskId }) => {
   }, [token]);
 
 
-  const handleUnsubscribe = async () => {
+  const handleUnsubscribe = async (taskId: number) => {
+  try {
+    const response = await axios.get(
+      `http://127.0.0.1:8008/api/v1/task-subscribers/?task=${taskId}&user=${userId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
-    try {
-      const response = await axios.get(
+    const subscriptions = response.data;
+    if (subscriptions.length > 0) {
+      await axios.delete(
         `http://127.0.0.1:8008/api/v1/task-subscribers/?task=${taskId}&user=${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
-      const subscriptions = response.data;
-      if (subscriptions.length > 0) {
-        await axios.delete(
-          `http://127.0.0.1:8008/api/v1/task-subscribers/?task=${taskId}&user=${userId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        console.log('Unsubscribed successfully');
-      } else {
-        console.log('No subscription found for this user');
-      }
-    } catch (error) {
-      console.error('Unsubscribe error', error);
+      window.location.reload()
+    } else {
+      console.log('No subscription found for this user');
     }
-  };  
+  } catch (error) {
+    console.error('Unsubscribe error', error);
+  }
+};
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -125,7 +125,6 @@ const SubscribesPage = ({ taskId }) => {
                     <p className="text-[1.5rem]">{subscription.task_details.project_task_id}</p>
                   </div>
                   <div className="flex my-auto">
-                    <Star className="w-10 h-10 p-2 rounded-full hover:text-yellow-400 dark:hover:text-yellow-300 transition cursor-pointer" strokeWidth={1}/>
                     <Popover className="relative">
                         <Popover.Button className="p-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-full">
                           <MoreVertical className='w-6 h-6'/>
@@ -141,7 +140,7 @@ const SubscribesPage = ({ taskId }) => {
                               Show
                             </button>
                             <button
-                              onClick={() => handleUnsubscribe()}
+                              onClick={() => handleUnsubscribe(subscription.task)}
                               className="px-4 py-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900 transition-all text-left rounded">
                               Unsubscribe
                             </button>
