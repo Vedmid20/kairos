@@ -52,8 +52,10 @@ export default function CreateZoomButton({ name }: { name: string }) {
 
   useEffect(() => {
     const fetchMessages = async () => {
+      if (!token || !projectId) return;
+
       try {
-        const res = await axios.get(`http://127.0.0.1:8008/api/v1/meeting-messages/`,
+        const res = await axios.get(`http://127.0.0.1:8008/api/v1/meeting-messages/?project_id=${projectId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -67,13 +69,12 @@ export default function CreateZoomButton({ name }: { name: string }) {
     };
 
     fetchMessages();
-  }, []);
+  }, [token]);
 
   const handleSendMessage = async () => {
     if (!messageInput.trim()) return;
 
     try {
-      alert(userId)
       const res = await axios.post(`http://127.0.0.1:8008/api/v1/meeting-messages/`, {
         meeting_text: messageInput,
         meeting_leader: userId,
@@ -130,10 +131,17 @@ export default function CreateZoomButton({ name }: { name: string }) {
       <h1>Meetings</h1>
       <title>Meetings</title>
       <div className="flex flex-col items-center gap-4 p-4">
-        <div className="w-full max-w-xl h-64 overflow-y-auto bg-gray-100 p-4 rounded shadow">
+        <div className="w-full max-w-xl h-96 overflow-y-auto border border-violet-500 border-t-8 p-4 rounded shadow">
           {messages.map((msg, index) => (
-            <div key={index} className={`mb-2 ${msg.from_ws ? 'text-blue-500' : 'text-black'}`}>
-              {msg.content}
+            <div key={index} className="flex gap-2 p-2">
+              <div className="">
+                <img src={msg.meeting_leader_avatar} alt="" className="w-10 rounded-full"/>
+              </div>
+              <div className="bg-black/10 dark:bg-white/10 p-2 rounded-lg rounded-tl-none min-w-72">
+                <p className="text-violet-500 dark:text-violet-400">{msg.meeting_leader_name}</p>
+                <p>{msg.meeting_text}</p>
+                <p>{new Date(msg.created_at).toLocaleString()}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -143,8 +151,8 @@ export default function CreateZoomButton({ name }: { name: string }) {
             type="text"
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
-            className="flex-1 p-2 border rounded"
-            placeholder="Введіть повідомлення..."
+            className="flex-1 p-2 border rounded !transform-none"
+            placeholder="Enter message..."
           />
           <button
             onClick={handleSendMessage}
@@ -154,7 +162,7 @@ export default function CreateZoomButton({ name }: { name: string }) {
           </button>
         </div>
 
-        <button onClick={handleCreateMeeting} className="bg-blue-600 text-white px-4 py-2 rounded">
+        <button onClick={handleCreateMeeting} className="bg-violet-500 rounded-lg hover:bg-violet-600 transition-all text-white p-2">
           Create Zoom Meeting
         </button>
       </div>
