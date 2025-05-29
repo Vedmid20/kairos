@@ -92,7 +92,7 @@ export default function TicketCalendar() {
           return (
             <div className="h-full w-full max-h-15 mx-auto mt-2 bg-violet-500/50 rounded-lg px-1 flex-col gap-10 cursor-pointer hover:bg-violet-600/50">
               <h2>
-                {arg.event.title.length > 15 ? `${arg.event.title.slice(0, 15)}...` : arg.event.title}
+                {arg.event.title.length > 30 ? `${arg.event.title.slice(0, 30)}...` : arg.event.title}
               </h2>
               <span className="text-xs text-white/70">
                 {arg.event.extendedProps?.type_name}

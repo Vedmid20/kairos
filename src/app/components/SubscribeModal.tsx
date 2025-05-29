@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { X } from 'lucide-react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import { motion } from 'framer-motion';
 import Cookie from 'js-cookie';
 
@@ -14,12 +14,22 @@ interface SubscribeModalProps {
   taskId: number;
 }
 
+interface User {
+  id: number;
+  username: string;
+  avatar?: string;
+  email?: string;
+}
+
 if (typeof window !== 'undefined') {
   Modal.setAppElement('#__next');
 }
 
 export default function SubscribeModal({ isOpen, onRequestClose, taskId }: SubscribeModalProps) {
   const [userId, setUserId] = useState<string | null>(null);
+  const [subscribers, setSubscribers] = useState<User[]>([]);
+  const [loadingSubscribers, setLoadingSubscribers] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
   const projectId = Cookie.get('selectedProject');
 
@@ -28,13 +38,49 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
       try {
         const decoded: any = jwtDecode(token);
         setUserId(decoded.user_id);
-      } catch (error) {
-        console.error('Error decoding token:', error);
+      } catch {
+        setUserId(null);
       }
     }
   }, [token]);
 
-  const handleSubscribe = async (type: 'solo' | 'team') => {
+  useEffect(() => {
+    if (isOpen && taskId && token) {
+      fetchSubscribers();
+    }
+  }, [isOpen, taskId, token]);
+
+  const fetchSubscribers = async () => {
+    setLoadingSubscribers(true);
+    setError(null);
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8008/api/v1/task-subscribers/?task=${taskId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const subscriberData = response.data;
+
+      const users = await Promise.all(
+        subscriberData.map(async (sub: { user_subscriber: number }) => {
+          const userRes = await axios.get(
+            `http://127.0.0.1:8008/api/v1/users/${sub.user_subscriber}/`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          return userRes.data;
+        })
+      );
+
+      setSubscribers(users);
+    } catch {
+      setError('Failed to load subscribers');
+    } finally {
+      setLoadingSubscribers(false);
+    }
+  };
+
+  const handleSubscribe = async () => {
     if (!userId || !taskId) return;
     try {
       await axios.post(
@@ -42,15 +88,13 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
         { user_subscriber: userId, task: taskId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      onRequestClose();
-    } catch (error) {
-      console.error('Subscribe error', error);
+      fetchSubscribers();
+    } catch {
     }
   };
 
   const handleUnsubscribe = async () => {
     if (!userId || !taskId) return;
-    
     try {
       const response = await axios.get(
         `http://127.0.0.1:8008/api/v1/task-subscribers/?task=${taskId}&user=${userId}`,
@@ -58,24 +102,19 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
       const subscriptions = response.data;
       if (subscriptions.length > 0) {
         await axios.delete(
-          `http://127.0.0.1:8008/api/v1/task-subscribers/?task=${taskId}&user=${userId}`,
+          `http://127.0.0.1:8008/api/v1/task-subscribers/${subscriptions[0].id}/`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log('Unsubscribed successfully');
-        onRequestClose();
-      } else {
-        console.log('No subscription found for this user');
+        fetchSubscribers();
       }
-    } catch (error) {
-      console.error('Unsubscribe error', error);
+    } catch {
     }
-  };  
+  };
 
   return (
     <Modal
@@ -93,7 +132,6 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
         </button>
       </div>
       <hr className="mt-5 -mb-10" />
-
       <motion.div
         initial="hidden"
         animate="visible"
@@ -106,23 +144,39 @@ export default function SubscribeModal({ isOpen, onRequestClose, taskId }: Subsc
         transition={{ duration: 0.3 }}
         className="relative z-50 mt-10 flex flex-col gap-5"
       >
-        <button
-          onClick={() => handleSubscribe('solo')}
-          className="form-button bg-violet-600 hover:bg-violet-700 text-white"
-        >
-          Solo Subscribe
-        </button>
-        <button
-          onClick={() => handleSubscribe('team')}
-          className="form-button bg-violet-500 hover:bg-violet-600 text-white">
-          Team Subscribe
-        </button>
-        <button
-          onClick={() => handleUnsubscribe()}
-          className="form-button bg-red-500 hover:bg-red-600 text-white"
-        >
-          Unsubscribe
-        </button>
+        <div>
+          {loadingSubscribers && <p>Loading subscribers...</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          {!loadingSubscribers && subscribers.length === 0 && <p className='flex justify-center mt-4'>No subscribers yet</p>}
+          {!loadingSubscribers && subscribers.length > 0 && (
+            <ul className="max-h-40 overflow-y-auto space-y-2">
+              {subscribers.map(user => (
+                <li key={user.id} className="flex justify-center items-center gap-3 mt-4">
+                  <img
+                    src={user.avatar || '/default-avatar.png'}
+                    alt={user.username}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <span>{user.username}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="flex mt-4 gap-4 justify-center">
+          <button
+            onClick={handleSubscribe}
+            className="form-button bg-violet-600 hover:bg-violet-700 text-white"
+          >
+            Subscribe
+          </button>
+          <button
+            onClick={handleUnsubscribe}
+            className="form-button bg-red-600 hover:bg-red-700 text-white"
+          >
+            Unsubscribe
+          </button>
+        </div>
       </motion.div>
     </Modal>
   );

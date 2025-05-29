@@ -78,7 +78,7 @@ export default function CreateTicketTypeModal({ isOpen, onClose, onCreated }) {
         className="mt-4">
         
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-group">
+          <div className="form-group m-auto">
             <label htmlFor="task_type_name" className='flex'>Type name<p className='text-red-400 ml-1'>*</p></label>
             <input
               id="task_type_name"
@@ -90,7 +90,7 @@ export default function CreateTicketTypeModal({ isOpen, onClose, onCreated }) {
             {errors.task_type_name && <p className="error">{errors.task_type_name.message}</p>}
           </div>
 
-          <button type="submit" className="form-button mt-4 w-full">
+          <button type="submit" className="form-button mt-4 w-full m-auto">
             Create
           </button>
         </form>

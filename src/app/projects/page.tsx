@@ -129,11 +129,9 @@ const ProjectsPage = () => {
                   <div className="mt-3 border-t-2 pt-2 border-black/50 dark:border-white/75">
                     <p className="mb-1">Members <span
                         className="bg-violet-500/50 px-3 rounded-full">{project.members_count}</span></p>
-                    <p>Bugs <span className="bg-violet-500/50 px-3 rounded-full">{project.tasks_count}</span></p>
+                    <p>Tickets <span className="bg-violet-500/50 px-3 rounded-full">{project.tasks_count}</span></p>
                     <p className="text-xs mt-2">Created at <span
                         className="px-1 rounded-full">{project.created_at}</span></p>
-                    <p className="text-xs mt-2">Joined at <span className="px-1 rounded-full">{project.joined_at}</span>
-                    </p>
                   </div>
                 </div>
 

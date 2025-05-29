@@ -137,7 +137,7 @@ export default function CreateZoomButton({ name }: { name: string }) {
               <div className="">
                 <img src={msg.meeting_leader_avatar} alt="" className="w-10 rounded-full"/>
               </div>
-              <div className="bg-black/10 dark:bg-white/10 p-2 rounded-lg rounded-tl-none min-w-72">
+              <div className="bg-black/10 dark:bg-white/10 p-2 rounded-lg rounded-tl-none max-w-96">
                 <p className="text-violet-500 dark:text-violet-400">{msg.meeting_leader_name}</p>
                 <p>{msg.meeting_text}</p>
                 <p>{new Date(msg.created_at).toLocaleString()}</p>

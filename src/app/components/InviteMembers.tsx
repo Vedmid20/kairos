@@ -12,6 +12,7 @@ import '@/app/styles/mixins.scss';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { toast } from 'sonner';
+import { X } from 'lucide-react';
 
 if (typeof window !== 'undefined') {
   Modal.setAppElement('#__next');
@@ -19,25 +20,25 @@ if (typeof window !== 'undefined') {
 
 const schema = yup.object({
   search: yup.string()
-    .matches(/^[a-zA-Z0-9 _.,!]+$/, 'Search term can only contain letters, numbers, and punctuation')
-    .optional(),
+    .email('Invalid email format')
+    .required('Email is required'),
 });
 
-export default function InviteMembersModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void, projectId: string }) {
+export default function InviteMembersModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const { register, handleSubmit, setError, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
   const [token, setToken] = useState<string | null>(null);
+  const [searchInput, setSearchInput] = useState<string>('');
+  const projectId = Cookies.get('selectedProject');
   const [userId, setUserId] = useState<string | null>(null);
-  const [searchInput, setSearchInput] = useState<string | null>('');
-  const [users, setUsers] = useState<any[]>([]);
-  const [selectedUser, setSelectedUser] = useState<any | null>(null);
-  const projectId = Cookies.get('selectedProject')
 
-  useEffect(() => {
+
+   useEffect(() => {
     const storedToken = localStorage.getItem("access_token");
     if (storedToken) {
       setToken(storedToken);
+
       try {
         const decoded: any = jwtDecode(storedToken);
         setUserId(decoded.user_id);
@@ -47,58 +48,51 @@ export default function InviteMembersModal({ isOpen, onClose }: { isOpen: boolea
     }
   }, []);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isOpen, token]);
 
   useEffect(() => {
-    if (searchInput?.trim()) {
-      const timeout = setTimeout(async () => {
-        try {
-          const response = await axios.get("http://127.0.0.1:8008/api/v1/users/", {
-            params: { search: searchInput }
-          });
-          console.log(response.data);
-          setUsers(response.data);
-        } catch (error) {
-          console.error("Error", error);
-        }
-      }, 500);
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'auto';
+    return () => { document.body.style.overflow = 'auto'; };
+  }, [isOpen]);
 
-      return () => clearTimeout(timeout);
-    } else {
-      setUsers([]);
-    }
-  }, [searchInput]);
-
-  const handleUserClick = (user: any) => {
-    setSearchInput(user.email); 
-    setSelectedUser(user);
-    setUsers([]); 
-  };
-
-  const handleInviteClick = async () => {
-    if (!selectedUser) {
-      console.log("No user selected");
-      return;
-    }
-    console.log(selectedUser.id, projectId);
-    
+  const onInvite = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:8008/api/v1/project-members/", {
-        user: selectedUser.id,
-        project: projectId, 
+      await schema.validate({ search: searchInput });
+
+      if (!token || !projectId) {
+        toast.error("Missing token or project ID");
+        return;
+      }
+
+      const response = await axios.get("http://127.0.0.1:8008/api/v1/users/", {
+        params: { search: searchInput }
       });
+
+      const matchedUser = response.data.find((user: any) => user.email === searchInput);
+      if (!matchedUser) {
+        toast.error("User with this email not found");
+        return;
+      }
+
+      await axios.post("http://127.0.0.1:8008/api/v1/project-invites/", {
+        invited_user: matchedUser.id,
+        project: projectId,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      toast.success(`Invite sent to ${searchInput}`);
+      reset();
+      setSearchInput('');
       onClose();
-    } catch {
-      toast.error(`User ${searchInput} project member`)
+
+    } catch (error: any) {
+      if (error.name === 'ValidationError') {
+        setError('search', { message: error.message });
+      } else {
+        toast.error("Failed to send invite");
+        console.error(error);
+      }
     }
   };
 
@@ -109,18 +103,18 @@ export default function InviteMembersModal({ isOpen, onClose }: { isOpen: boolea
       contentLabel="Invite Members Modal"
       className="relative z-50 max-w-lg w-full p-6 bg-white dark:bg-grey rounded-lg shadow-lg"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-      closeTimeoutMS={200}>
-      
+      closeTimeoutMS={200}
+    >
       <div className="flex">
         <h2 className="text-xl">Invite colleagues</h2>
         <button
           onClick={onClose}
-          className="absolute right-10 text-lg font-semibold text-gray-500 hover:text-gray-700">
-          x
+          className="absolute right-10 text-lg font-semibold text-gray-500 hover:text-gray-700"
+        >
+          <X />
         </button>
       </div>
-      <hr className='mt-5' />
-
+      <hr className="mt-5" />
       <motion.div
         initial="hidden"
         animate="visible"
@@ -131,44 +125,27 @@ export default function InviteMembersModal({ isOpen, onClose }: { isOpen: boolea
           exit: { opacity: 0, y: '25%' },
         }}
         transition={{ duration: 0.3 }}
-        className="relative z-50">
-          
-        <form action="">
-          <div className="form-group flex-col justify-center">
-            <label htmlFor="user" className='flex'>User email</label>
+        className="relative z-50"
+      >
+        <form onSubmit={handleSubmit(() => onInvite())}>
+          <div className="form-group flex-col justify-center m-auto">
+            <label htmlFor="user" className="flex">User email</label>
             <input
-              type='search'
-              id='user'
+              type="search"
+              id="user"
               {...register('search')}
-              placeholder='Enter user email'
-              value={searchInput || ''}
+              placeholder="Enter user email"
+              value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
+              autoComplete="off"
             />
             {errors.search && <p className="error">{errors.search.message}</p>}
           </div>
 
-          <div className="mt-4">
-            {searchInput?.trim() && users.length > 0 ? (
-              <ul>
-                {users.map((user: any) => (
-                  <li
-                    key={user.id}
-                    onClick={() => handleUserClick(user)}
-                    className="cursor-pointer header-button px-2 rounded-lg hover:bg-white/10 py-2">
-                    {user.email}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No users found</p>
-            )}
-          </div>
-
-          <button type="button" onClick={handleInviteClick} className='form-button'>
+          <button type="submit" className="form-button m-auto mt-4">
             Invite
           </button>
         </form>
-
       </motion.div>
     </Modal>
   );

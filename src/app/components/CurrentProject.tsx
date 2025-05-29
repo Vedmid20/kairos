@@ -21,14 +21,12 @@ const CurrentProject = () => {
                 });
                 setProject(response.data);
             } catch (error) {
-                console.error("Помилка отримання проєкту:", error);
+                console.error("Error of take project:", error);
             }
         };
 
         fetchProject();
     }, [token]);
-
-    console.log()
 
     return (
         <div className="flex items-center gap-2 cursor-default">
@@ -38,7 +36,7 @@ const CurrentProject = () => {
                     <h2 className="text-[1.2rem]">{project.name}</h2>
                 </>
             ) : (
-                <p className="text-xs">Load...</p>
+                <p className="text-xs">Loading...</p>
             )}
         </div>
     );

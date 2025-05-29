@@ -148,7 +148,7 @@ const ProfilePage = () => {
     <div className="">
       <title>Profile</title>
       <h1 className="mb-4">Profile</h1>
-      <div className="p-4 rounded-lg flex ">
+      <div className=" rounded-lg flex ">
         <div className=" p-10 w-[30rem] rounded-lg border border-t-8 border-violet-500">
           <div className="relative w-36 h-36 mt-4 cursor-pointer" onClick={() => fileInputRef.current?.click()}>
             <img src={preview || user.avatar} alt="Avatar"

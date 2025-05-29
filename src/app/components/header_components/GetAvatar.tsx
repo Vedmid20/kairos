@@ -69,8 +69,6 @@ export default function GetAvatar() {
 
     const menuItems = [
         { label: "Profile", action: () => router.push('/profile'), icon: <User /> },
-        { label: "Activity", action: () => router.push('/activity'), icon: <Activity /> },
-        { label: "Settings", action: () => router.push('/settings'), icon: <UserCogIcon /> },
         { label: "Log Out", action: () => handleLogOut(), icon: <LogOut /> },
     ];
 

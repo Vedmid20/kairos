@@ -13,6 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Cookies from 'js-cookie';
 import { X } from 'lucide-react';
 import CreateTicketTypeModal from './CreateTicketType';
+import {toast} from "sonner";
 
 if (typeof window !== 'undefined') {
   Modal.setAppElement('#__next');
@@ -93,10 +94,18 @@ export default function CreateTicketModal({ isOpen, onClose, children }) {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      console.log("Ticket created successfully");
+      await axios.post('http://127.0.0.1:8008/api/v1/notifications/', {
+        notification_for_project: projectID,
+        content: `Create a new ticket`,
+        user: userId,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
       reset();
       onClose();
       window.location.reload();
+      toast.success("Ticket created successfully!");
     } catch (error) {
       console.error("Error creating ticket:", error.response?.data || error.message);
     }
